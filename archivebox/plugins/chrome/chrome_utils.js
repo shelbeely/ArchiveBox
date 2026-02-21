@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /**
  * Chrome Extension Management Utilities
  *
@@ -747,19 +747,19 @@ async function installChromium(options = {}) {
  * Install puppeteer-core npm package.
  *
  * @param {Object} options - Install options
- * @param {string} [options.npmPrefix] - npm prefix directory (default: DATA_DIR/lib/<arch>/npm or ./node_modules parent)
+ * @param {string} [options.bunPrefix] - bun prefix directory (default: DATA_DIR/lib/<arch>/bun or ./node_modules parent)
  * @param {number} [options.timeout=60000] - Timeout in milliseconds
  * @returns {Promise<Object>} - {success, path, error}
  */
 async function installPuppeteerCore(options = {}) {
     const arch = `${process.arch}-${process.platform}`;
-    const defaultPrefix = path.join(getEnv('LIB_DIR', getEnv('DATA_DIR', '.')), 'npm');
+    const defaultPrefix = path.join(getEnv('LIB_DIR', getEnv('DATA_DIR', '.')), 'bun');
     const {
-        npmPrefix = defaultPrefix,
+        bunPrefix = defaultPrefix,
         timeout = 60000,
     } = options;
 
-    const nodeModulesDir = path.join(npmPrefix, 'node_modules');
+    const nodeModulesDir = path.join(bunPrefix, 'node_modules');
     const puppeteerPath = path.join(nodeModulesDir, 'puppeteer-core');
 
     // Check if already installed
@@ -768,17 +768,17 @@ async function installPuppeteerCore(options = {}) {
         return { success: true, path: puppeteerPath };
     }
 
-    console.error(`[*] Installing puppeteer-core to ${npmPrefix}...`);
+    console.error(`[*] Installing puppeteer-core to ${bunPrefix}...`);
 
     // Create directory
-    if (!fs.existsSync(npmPrefix)) {
-        fs.mkdirSync(npmPrefix, { recursive: true });
+    if (!fs.existsSync(bunPrefix)) {
+        fs.mkdirSync(bunPrefix, { recursive: true });
     }
 
     try {
         const { execSync } = require('child_process');
         execSync(
-            `npm install --prefix "${npmPrefix}" puppeteer-core`,
+            `bun add --cwd "${bunPrefix}" puppeteer-core`,
             { encoding: 'utf8', timeout, stdio: ['pipe', 'pipe', 'pipe'] }
         );
         console.error(`[+] puppeteer-core installed successfully`);
@@ -1468,8 +1468,8 @@ function getLibDir() {
 }
 
 /**
- * Get NODE_MODULES_DIR path for npm packages.
- * Returns LIB_DIR/npm/node_modules/
+ * Get NODE_MODULES_DIR path for bun packages.
+ * Returns LIB_DIR/bun/node_modules/
  *
  * @returns {string} - Absolute path to node_modules directory
  */
@@ -1477,7 +1477,7 @@ function getNodeModulesDir() {
     if (process.env.NODE_MODULES_DIR) {
         return path.resolve(process.env.NODE_MODULES_DIR);
     }
-    return path.resolve(path.join(getLibDir(), 'npm', 'node_modules'));
+    return path.resolve(path.join(getLibDir(), 'bun', 'node_modules'));
 }
 
 /**
@@ -1498,8 +1498,8 @@ function getTestEnv() {
         MACHINE_TYPE: machineType,
         LIB_DIR: libDir,
         NODE_MODULES_DIR: nodeModulesDir,
-        NODE_PATH: nodeModulesDir,  // Node.js uses NODE_PATH for module resolution
-        NPM_BIN_DIR: path.join(libDir, 'npm', '.bin'),
+        NODE_PATH: nodeModulesDir,  // Bun uses NODE_PATH for module resolution
+        BUN_BIN_DIR: path.join(libDir, 'bun', '.bin'),
         CHROME_EXTENSIONS_DIR: getExtensionsDir(),
     };
 }

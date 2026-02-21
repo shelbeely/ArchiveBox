@@ -40,6 +40,7 @@
   - ✅ `supervisord`-based process management
 - ✅ Plugin-based extractor hooks (`on_Snapshot__*.js`, `on_Crawl__*.py`) for lifecycle management
 - ✅ Chrome tab management via CDP (Chrome DevTools Protocol) using `chrome_utils.js`
+- ✅ Switch from Node.js/npm to [Bun](https://bun.sh) for JS plugin execution (faster startup, unified install/run/test toolchain)
 - 🛠 Keep browser sessions open across multiple snapshots (reduce open/close overhead)
 - 🛠 Multi-user support with separate personas/credentials
 - 📅 Remove Seed model (v0.9.x — Crawl model now stores URLs directly, Seed model removed)
@@ -82,6 +83,7 @@
 - ✅ Upgrade from Django 3 to Django 6+
 - ✅ REST API via `django-ninja` with multiple auth methods
 - ✅ Task queue / worker pool with custom `Orchestrator` + `Worker` system
+- ✅ Switch from Node.js/npm to [Bun](https://bun.sh) for JS plugin execution
 - 🛠 Switch to SHA256 of URL as unique link ID (UUIDs currently, migration to content hashes pending)
 - 📅 Support named collections of archived content with different user access permissions
 - 📅 Support sharing archived assets via DHT + torrent / IPFS / ZeroNet / other sharing system

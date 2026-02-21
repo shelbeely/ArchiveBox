@@ -47,11 +47,11 @@ def main():
         overrides={'pip': {'packages': ['yt-dlp[default]']}},
     )
 
-    # Node.js (required by several JS-based extractors, declared here per legacy binaries.jsonl)
+    # Bun (required by several JS-based extractors, declared here per legacy binaries.jsonl)
     output_binary(
-        name='node',
-        binproviders='apt,brew,env',
-        overrides={'apt': {'packages': ['nodejs']}},
+        name='bun',
+        binproviders='env',
+        overrides={},
     )
 
     # ffmpeg (used by media extraction)

@@ -46,7 +46,7 @@ def test_verify_deps_with_abx_pkg():
     EnvProvider.model_rebuild()
 
     # Verify node is available
-    node_binary = Binary(name='node', binproviders=[EnvProvider()])
+    node_binary = Binary(name='bun', binproviders=[EnvProvider()])
     node_loaded = node_binary.load()
     assert node_loaded and node_loaded.abspath, "Node.js required for infiniscroll plugin"
 
@@ -59,7 +59,7 @@ def test_config_infiniscroll_disabled_skips():
         env['INFINISCROLL_ENABLED'] = 'False'
 
         result = subprocess.run(
-            ['node', str(INFINISCROLL_HOOK), f'--url={TEST_URL}', '--snapshot-id=test-disabled'],
+            ['bun', str(INFINISCROLL_HOOK), f'--url={TEST_URL}', '--snapshot-id=test-disabled'],
             cwd=tmpdir,
             capture_output=True,
             text=True,
@@ -83,7 +83,7 @@ def test_fails_gracefully_without_chrome_session():
         infiniscroll_dir.mkdir(parents=True, exist_ok=True)
 
         result = subprocess.run(
-            ['node', str(INFINISCROLL_HOOK), f'--url={TEST_URL}', '--snapshot-id=test-no-chrome'],
+            ['bun', str(INFINISCROLL_HOOK), f'--url={TEST_URL}', '--snapshot-id=test-no-chrome'],
             cwd=infiniscroll_dir,
             capture_output=True,
             text=True,
@@ -118,7 +118,7 @@ def test_scrolls_page_and_outputs_stats():
             env['INFINISCROLL_MIN_HEIGHT'] = '1000'  # Lower threshold for test
 
             result = subprocess.run(
-                ['node', str(INFINISCROLL_HOOK), f'--url={TEST_URL}', '--snapshot-id=snap-infiniscroll'],
+                ['bun', str(INFINISCROLL_HOOK), f'--url={TEST_URL}', '--snapshot-id=snap-infiniscroll'],
                 cwd=str(infiniscroll_dir),
                 capture_output=True,
                 text=True,
@@ -174,7 +174,7 @@ def test_config_scroll_limit_honored():
             env['INFINISCROLL_MIN_HEIGHT'] = '100000'  # High threshold so limit kicks in
 
             result = subprocess.run(
-                ['node', str(INFINISCROLL_HOOK), f'--url={TEST_URL}', '--snapshot-id=snap-limit'],
+                ['bun', str(INFINISCROLL_HOOK), f'--url={TEST_URL}', '--snapshot-id=snap-limit'],
                 cwd=str(infiniscroll_dir),
                 capture_output=True,
                 text=True,
@@ -226,7 +226,7 @@ def test_config_timeout_honored():
 
             start_time = time.time()
             result = subprocess.run(
-                ['node', str(INFINISCROLL_HOOK), f'--url={TEST_URL}', '--snapshot-id=snap-timeout'],
+                ['bun', str(INFINISCROLL_HOOK), f'--url={TEST_URL}', '--snapshot-id=snap-timeout'],
                 cwd=str(infiniscroll_dir),
                 capture_output=True,
                 text=True,

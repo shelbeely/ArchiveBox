@@ -79,7 +79,7 @@ with tempfile.TemporaryDirectory() as tmpdir:
     screenshot_dir.mkdir(parents=True)
 
     result = subprocess.run(
-        ['node', str(SCREENSHOT_HOOK), '--url=https://example.com', '--snapshot-id=snap-456'],
+        ['bun', str(SCREENSHOT_HOOK), '--url=https://example.com', '--snapshot-id=snap-456'],
         cwd=str(screenshot_dir),
         env=get_test_env(),
         capture_output=True,

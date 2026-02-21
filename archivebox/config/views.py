@@ -23,7 +23,7 @@ from archivebox.machine.models import Binary
 # Common binaries to check for
 KNOWN_BINARIES = [
     'wget', 'curl', 'chromium', 'chrome', 'google-chrome', 'google-chrome-stable',
-    'node', 'npm', 'npx', 'yt-dlp', 'ytdlp', 'youtube-dl',
+    'bun', 'yt-dlp', 'ytdlp', 'youtube-dl',
     'git', 'singlefile', 'readability-extractor', 'mercury-parser',
     'python3', 'python', 'bash', 'zsh',
     'ffmpeg', 'ripgrep', 'rg', 'sonic', 'archivebox',

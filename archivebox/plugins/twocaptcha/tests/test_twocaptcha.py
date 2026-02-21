@@ -54,7 +54,7 @@ class TestTwoCaptcha:
             env['TWOCAPTCHA_API_KEY'] = self.api_key
 
             # Install
-            result = subprocess.run(['node', str(INSTALL_SCRIPT)], env=env, timeout=120, capture_output=True, text=True)
+            result = subprocess.run(['bun', str(INSTALL_SCRIPT)], env=env, timeout=120, capture_output=True, text=True)
             assert result.returncode == 0, f"Install failed: {result.stderr}"
 
             cache = Path(env['CHROME_EXTENSIONS_DIR']) / 'twocaptcha.extension.json'
@@ -94,7 +94,7 @@ class TestTwoCaptcha:
             env['TWOCAPTCHA_RETRY_COUNT'] = '5'
             env['TWOCAPTCHA_RETRY_DELAY'] = '10'
 
-            subprocess.run(['node', str(INSTALL_SCRIPT)], env=env, timeout=120, capture_output=True)
+            subprocess.run(['bun', str(INSTALL_SCRIPT)], env=env, timeout=120, capture_output=True)
 
             # Launch Chromium in crawls directory
             crawl_id = 'cfg'
@@ -113,7 +113,7 @@ class TestTwoCaptcha:
                 assert extensions_file.exists(), f"extensions.json not created"
 
                 result = subprocess.run(
-                    ['node', str(CONFIG_SCRIPT), '--url=https://example.com', '--snapshot-id=test'],
+                    ['bun', str(CONFIG_SCRIPT), '--url=https://example.com', '--snapshot-id=test'],
                     env=env, timeout=30, capture_output=True, text=True
                 )
                 assert result.returncode == 0, f"Config failed: {result.stderr}"
@@ -158,7 +158,7 @@ const puppeteer = require('puppeteer-core');
 }})();
 '''
                 (tmpdir / 'v.js').write_text(script)
-                r = subprocess.run(['node', str(tmpdir / 'v.js')], env=env, timeout=30, capture_output=True, text=True)
+                r = subprocess.run(['bun', str(tmpdir / 'v.js')], env=env, timeout=30, capture_output=True, text=True)
                 print(r.stderr)
                 assert r.returncode == 0, f"Verify failed: {r.stderr}"
 
@@ -213,7 +213,7 @@ const puppeteer = require('puppeteer-core');
             env = setup_test_env(tmpdir)
             env['TWOCAPTCHA_API_KEY'] = self.api_key
 
-            subprocess.run(['node', str(INSTALL_SCRIPT)], env=env, timeout=120, capture_output=True)
+            subprocess.run(['bun', str(INSTALL_SCRIPT)], env=env, timeout=120, capture_output=True)
 
             # Launch Chromium in crawls directory
             crawl_id = 'solve'
@@ -231,7 +231,7 @@ const puppeteer = require('puppeteer-core');
                     time.sleep(0.5)
                 assert extensions_file.exists(), f"extensions.json not created"
 
-                subprocess.run(['node', str(CONFIG_SCRIPT), '--url=x', '--snapshot-id=x'], env=env, timeout=30, capture_output=True)
+                subprocess.run(['bun', str(CONFIG_SCRIPT), '--url=x', '--snapshot-id=x'], env=env, timeout=30, capture_output=True)
 
                 script = f'''
 if (process.env.NODE_MODULES_DIR) module.paths.unshift(process.env.NODE_MODULES_DIR);
@@ -322,7 +322,7 @@ const puppeteer = require('puppeteer-core');
 '''
                 (tmpdir / 's.js').write_text(script)
                 print("\n[*] Solving CAPTCHA (this can take up to 150s for 2captcha API)...")
-                r = subprocess.run(['node', str(tmpdir / 's.js')], env=env, timeout=200, capture_output=True, text=True)
+                r = subprocess.run(['bun', str(tmpdir / 's.js')], env=env, timeout=200, capture_output=True, text=True)
                 print(r.stderr)
                 assert r.returncode == 0, f"Failed: {r.stderr}"
 

@@ -283,7 +283,7 @@ const puppeteer = require('puppeteer-core');
     script_path.write_text(test_script)
 
     result = subprocess.run(
-        ['node', str(script_path)],
+        ['bun', str(script_path)],
         cwd=str(script_dir),
         capture_output=True,
         text=True,
@@ -331,7 +331,7 @@ def test_extension_loads_in_chromium():
         # Step 1: Install the uBlock extension
         print("[test] Installing uBlock extension...", flush=True)
         result = subprocess.run(
-            ['node', str(INSTALL_SCRIPT)],
+            ['bun', str(INSTALL_SCRIPT)],
             capture_output=True,
             text=True,
             env=env,
@@ -360,7 +360,7 @@ def test_extension_loads_in_chromium():
         env['CRAWL_OUTPUT_DIR'] = str(crawl_dir)
 
         chrome_launch_process = subprocess.Popen(
-            ['node', str(CHROME_LAUNCH_HOOK), f'--crawl-id={crawl_id}'],
+            ['bun', str(CHROME_LAUNCH_HOOK), f'--crawl-id={crawl_id}'],
             cwd=str(chrome_dir),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -481,7 +481,7 @@ const puppeteer = require('puppeteer-core');
             script_path.write_text(test_script)
 
             result = subprocess.run(
-                ['node', str(script_path)],
+                ['bun', str(script_path)],
                 cwd=str(tmpdir),
                 capture_output=True,
                 text=True,
@@ -603,7 +603,7 @@ def test_blocks_ads_on_yahoo_com():
         ext_dir = Path(env_base['CHROME_EXTENSIONS_DIR'])
 
         result = subprocess.run(
-            ['node', str(INSTALL_SCRIPT)],
+            ['bun', str(INSTALL_SCRIPT)],
             capture_output=True,
             text=True,
             env=env_base,
@@ -667,7 +667,7 @@ const puppeteer = require('{env_base['NODE_MODULES_DIR']}/puppeteer-core');
 '''
                     dash_script_path = tmpdir / 'check_dashboard.js'
                     dash_script_path.write_text(dashboard_script)
-                    subprocess.run(['node', str(dash_script_path)], capture_output=True, timeout=15, env=env_base)
+                    subprocess.run(['bun', str(dash_script_path)], capture_output=True, timeout=15, env=env_base)
 
             # Wait longer for extension to fully initialize filters
             # On first run, uBlock needs to download filter lists which can take 10-15 seconds

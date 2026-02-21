@@ -68,7 +68,7 @@ class TestConsolelogWithChrome(TestCase):
 
             # Run consolelog hook with the active Chrome session (background hook)
             result = subprocess.Popen(
-                ['node', str(CONSOLELOG_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
+                ['bun', str(CONSOLELOG_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
                 cwd=str(console_dir),
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
@@ -77,7 +77,7 @@ class TestConsolelogWithChrome(TestCase):
             )
 
             nav_result = subprocess.run(
-                ['node', str(CHROME_NAVIGATE_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
+                ['bun', str(CHROME_NAVIGATE_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
                 cwd=str(snapshot_chrome_dir),
                 capture_output=True,
                 text=True,

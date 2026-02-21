@@ -15,11 +15,11 @@
       "x-aliases": ["CHROMIUM_BINARY", "GOOGLE_CHROME_BINARY"],
       "description": "Path to Chromium binary"
     },
-    "CHROME_NODE_BINARY": {
+    "CHROME_BUN_BINARY": {
       "type": "string",
-      "default": "node",
-      "x-fallback": "NODE_BINARY",
-      "description": "Path to Node.js binary (for Puppeteer)"
+      "default": "bun",
+      "x-fallback": "BUN_BINARY",
+      "description": "Path to Bun binary (for Puppeteer)"
     },
     "CHROME_TIMEOUT": {
       "type": "integer",

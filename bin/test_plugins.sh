@@ -13,7 +13,7 @@
 #   ./bin/test_plugins.sh --coverage-report   # Just show coverage report without running tests
 #
 # For running individual hooks with coverage:
-#   NODE_V8_COVERAGE=./coverage/js node <hook>.js [args]  # JS hooks
+#   NODE_V8_COVERAGE=./coverage/js bun <hook>.js [args]  # JS hooks
 #   coverage run --parallel-mode <hook>.py [args]         # Python hooks
 #
 # Coverage results are saved to .coverage (Python) and coverage/js (JavaScript):
@@ -57,7 +57,7 @@ show_js_coverage() {
         return
     fi
 
-    node - "$coverage_dir" << 'ENDJS'
+    bun - "$coverage_dir" << 'ENDJS'
 const fs = require('fs');
 const path = require('path');
 const coverageDir = process.argv[2];
@@ -95,7 +95,7 @@ const otherFiles = allFiles.filter(url => !url.startsWith('node:') && !url.inclu
 
 console.log('Total files with coverage: ' + allFiles.length + '\n');
 console.log('Plugin files: ' + pluginFiles.length);
-console.log('Node internal: ' + allFiles.filter(u => u.startsWith('node:')).length);
+console.log('Bun internal: ' + allFiles.filter(u => u.startsWith('node:')).length);
 console.log('Other: ' + otherFiles.length + '\n');
 
 console.log('JavaScript Coverage Report');
@@ -175,7 +175,7 @@ if [ "$ENABLE_COVERAGE" = true ]; then
     export COVERAGE_PROCESS_START="$ROOT_DIR/pyproject.toml"
     export PYTHONPATH="$ROOT_DIR:$PYTHONPATH"  # For sitecustomize.py
 
-    # Enable Node.js V8 coverage (built-in, no packages needed)
+    # Enable Bun V8 coverage (built-in, compatible with Node.js V8 format)
     export NODE_V8_COVERAGE="$ROOT_DIR/coverage/js"
 
     echo "Python coverage: enabled (subprocess support)"

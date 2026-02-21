@@ -15,11 +15,11 @@
       "x-aliases": ["SINGLE_FILE_BINARY"],
       "description": "Path to single-file binary"
     },
-    "SINGLEFILE_NODE_BINARY": {
+    "SINGLEFILE_BUN_BINARY": {
       "type": "string",
-      "default": "node",
-      "x-fallback": "NODE_BINARY",
-      "description": "Path to Node.js binary"
+      "default": "bun",
+      "x-fallback": "BUN_BINARY",
+      "description": "Path to Bun binary"
     },
     "SINGLEFILE_CHROME_BINARY": {
       "type": "string",

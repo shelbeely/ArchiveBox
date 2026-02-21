@@ -58,7 +58,7 @@ def test_verify_deps_with_abx_pkg():
     EnvProvider.model_rebuild()
 
     # Verify node is available
-    node_binary = Binary(name='node', binproviders=[EnvProvider()])
+    node_binary = Binary(name='bun', binproviders=[EnvProvider()])
     node_loaded = node_binary.load()
     assert node_loaded and node_loaded.abspath, "Node.js required for screenshot plugin"
 
@@ -84,7 +84,7 @@ def test_screenshot_with_chrome_session():
                 screenshot_dir.mkdir()
 
                 result = subprocess.run(
-                    ['node', str(SCREENSHOT_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
+                    ['bun', str(SCREENSHOT_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
                     cwd=str(screenshot_dir),
                     capture_output=True,
                     text=True,
@@ -118,7 +118,7 @@ def test_screenshot_with_chrome_session():
                 (snapshot_chrome_dir / 'target_id.txt').write_text('nonexistent-target-id')
 
                 result = subprocess.run(
-                    ['node', str(SCREENSHOT_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
+                    ['bun', str(SCREENSHOT_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
                     cwd=str(screenshot_dir3),
                     capture_output=True,
                     text=True,
@@ -148,7 +148,7 @@ def test_skips_when_staticfile_exists():
 
         env = get_test_env()
         result = subprocess.run(
-            ['node', str(SCREENSHOT_HOOK), f'--url={TEST_URL}', '--snapshot-id=snap-skip'],
+            ['bun', str(SCREENSHOT_HOOK), f'--url={TEST_URL}', '--snapshot-id=snap-skip'],
             cwd=str(screenshot_dir),
             capture_output=True,
             text=True,
@@ -193,7 +193,7 @@ def test_config_save_screenshot_false_skips():
         print(f"[DEBUG ENV COPY] Value: {env.get('NODE_V8_COVERAGE', 'NOT SET')}")
 
         result = subprocess.run(
-            ['node', str(SCREENSHOT_HOOK), f'--url={TEST_URL}', '--snapshot-id=test999'],
+            ['bun', str(SCREENSHOT_HOOK), f'--url={TEST_URL}', '--snapshot-id=test999'],
             cwd=tmpdir,
             capture_output=True,
             text=True,
@@ -224,7 +224,7 @@ def test_reports_missing_chrome():
         env['CHROME_BINARY'] = '/nonexistent/chrome'
 
         result = subprocess.run(
-            ['node', str(SCREENSHOT_HOOK), f'--url={TEST_URL}', '--snapshot-id=test123'],
+            ['bun', str(SCREENSHOT_HOOK), f'--url={TEST_URL}', '--snapshot-id=test123'],
             cwd=tmpdir,
             capture_output=True,
             text=True,
@@ -260,7 +260,7 @@ def test_waits_for_navigation_timeout():
 
         start_time = time.time()
         result = subprocess.run(
-            ['node', str(SCREENSHOT_HOOK), f'--url={TEST_URL}', '--snapshot-id=test-timeout'],
+            ['bun', str(SCREENSHOT_HOOK), f'--url={TEST_URL}', '--snapshot-id=test-timeout'],
             cwd=str(screenshot_dir),
             capture_output=True,
             text=True,
@@ -288,7 +288,7 @@ def test_config_timeout_honored():
         env['CHROME_TIMEOUT'] = '5'
 
         result = subprocess.run(
-            ['node', str(SCREENSHOT_HOOK), f'--url={TEST_URL}', '--snapshot-id=testtimeout'],
+            ['bun', str(SCREENSHOT_HOOK), f'--url={TEST_URL}', '--snapshot-id=testtimeout'],
             cwd=tmpdir,
             capture_output=True,
             text=True,
@@ -307,7 +307,7 @@ def test_missing_url_argument():
 
         env = get_test_env()
         result = subprocess.run(
-            ['node', str(SCREENSHOT_HOOK), '--snapshot-id=test-missing-url'],
+            ['bun', str(SCREENSHOT_HOOK), '--snapshot-id=test-missing-url'],
             cwd=tmpdir,
             capture_output=True,
             text=True,
@@ -327,7 +327,7 @@ def test_missing_snapshot_id_argument():
 
         env = get_test_env()
         result = subprocess.run(
-            ['node', str(SCREENSHOT_HOOK), f'--url={TEST_URL}'],
+            ['bun', str(SCREENSHOT_HOOK), f'--url={TEST_URL}'],
             cwd=tmpdir,
             capture_output=True,
             text=True,
@@ -354,7 +354,7 @@ def test_no_cdp_url_fails():
         screenshot_dir.mkdir()
 
         result = subprocess.run(
-            ['node', str(SCREENSHOT_HOOK), '--url=https://example.com', '--snapshot-id=test'],
+            ['bun', str(SCREENSHOT_HOOK), '--url=https://example.com', '--snapshot-id=test'],
             cwd=str(screenshot_dir),
             capture_output=True,
             text=True,
@@ -380,7 +380,7 @@ def test_no_target_id_fails():
         screenshot_dir.mkdir()
 
         result = subprocess.run(
-            ['node', str(SCREENSHOT_HOOK), '--url=https://example.com', '--snapshot-id=test'],
+            ['bun', str(SCREENSHOT_HOOK), '--url=https://example.com', '--snapshot-id=test'],
             cwd=str(screenshot_dir),
             capture_output=True,
             text=True,
@@ -406,7 +406,7 @@ def test_invalid_cdp_url_fails():
         screenshot_dir.mkdir()
 
         result = subprocess.run(
-            ['node', str(SCREENSHOT_HOOK), '--url=https://example.com', '--snapshot-id=test'],
+            ['bun', str(SCREENSHOT_HOOK), '--url=https://example.com', '--snapshot-id=test'],
             cwd=str(screenshot_dir),
             capture_output=True,
             text=True,
@@ -436,7 +436,7 @@ def test_invalid_timeout_uses_default():
         import time
         start = time.time()
         result = subprocess.run(
-            ['node', str(SCREENSHOT_HOOK), '--url=https://example.com', '--snapshot-id=test'],
+            ['bun', str(SCREENSHOT_HOOK), '--url=https://example.com', '--snapshot-id=test'],
             cwd=str(screenshot_dir),
             capture_output=True,
             text=True,

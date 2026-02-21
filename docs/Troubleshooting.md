@@ -87,16 +87,15 @@ env CHROME_BINARY=/path/from/step/1/chromium-browser archivebox version
 
 If you're missing `wget` or `curl`, simply install them using `apt` or your package manager of choice. If wget times out or randomly fails, upgrade it to the most recent version.
 
-### NPM Dependencies
+### Bun Dependencies
 
-NPM packages like `readability`, `singlefile`, etc. are auto-installed by `archivebox setup` into `data/node_modules`.
+Bun packages like `readability`, `singlefile`, etc. are auto-installed by `archivebox setup` into `data/bun/node_modules`.
 
 ```bash
-node --version         # make sure you have node >=19 installed
-npm --version          # make sure you have npm installed
+bun --version          # make sure you have bun installed
 
 cd ~/archivebox/data   # go into your data directory
-archivebox setup       # auto-installs all JS dependencies into ./node_modules
+archivebox setup       # auto-installs all JS dependencies
 
 archivebox version     # show version full info to make sure they're loaded correctly
 ```

@@ -34,7 +34,7 @@ TEST_URL = 'https://example.com'
 
 def run_title_capture(title_dir, snapshot_chrome_dir, env, url, snapshot_id):
     nav_result = subprocess.run(
-        ['node', str(CHROME_NAVIGATE_HOOK), f'--url={url}', f'--snapshot-id={snapshot_id}'],
+        ['bun', str(CHROME_NAVIGATE_HOOK), f'--url={url}', f'--snapshot-id={snapshot_id}'],
         cwd=str(snapshot_chrome_dir),
         capture_output=True,
         text=True,
@@ -42,7 +42,7 @@ def run_title_capture(title_dir, snapshot_chrome_dir, env, url, snapshot_id):
         env=env,
     )
     result = subprocess.run(
-        ['node', str(TITLE_HOOK), f'--url={url}', f'--snapshot-id={snapshot_id}'],
+        ['bun', str(TITLE_HOOK), f'--url={url}', f'--snapshot-id={snapshot_id}'],
         cwd=title_dir,
         capture_output=True,
         text=True,
@@ -61,7 +61,7 @@ def test_extracts_title_from_example_com():
     """Test full workflow: extract title from real example.com."""
 
     # Check node is available
-    if not shutil.which('node'):
+    if not shutil.which('bun'):
         pass
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -115,7 +115,7 @@ def test_extracts_title_from_example_com():
 def test_fails_without_chrome_session():
     """Test that title plugin fails when chrome session is missing."""
 
-    if not shutil.which('node'):
+    if not shutil.which('bun'):
         pass
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -125,7 +125,7 @@ def test_fails_without_chrome_session():
 
         # Run title extraction
         result = subprocess.run(
-            ['node', str(TITLE_HOOK), f'--url={TEST_URL}', '--snapshot-id=testhttp'],
+            ['bun', str(TITLE_HOOK), f'--url={TEST_URL}', '--snapshot-id=testhttp'],
             cwd=title_dir,
             capture_output=True,
             text=True,
@@ -140,7 +140,7 @@ def test_fails_without_chrome_session():
 def test_config_timeout_honored():
     """Test that TITLE_TIMEOUT config is respected."""
 
-    if not shutil.which('node'):
+    if not shutil.which('bun'):
         pass
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -172,7 +172,7 @@ def test_config_timeout_honored():
 def test_handles_https_urls():
     """Test that HTTPS URLs work correctly."""
 
-    if not shutil.which('node'):
+    if not shutil.which('bun'):
         pass
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -207,7 +207,7 @@ def test_handles_404_gracefully():
     with the generic "Example Domain" title.
     """
 
-    if not shutil.which('node'):
+    if not shutil.which('bun'):
         pass
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -239,7 +239,7 @@ def test_handles_404_gracefully():
 def test_handles_redirects():
     """Test that title plugin handles redirects correctly."""
 
-    if not shutil.which('node'):
+    if not shutil.which('bun'):
         pass
 
     with tempfile.TemporaryDirectory() as tmpdir:

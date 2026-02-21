@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /**
  * Print a URL to PDF using Chrome/Puppeteer.
  *

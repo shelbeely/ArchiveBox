@@ -51,7 +51,7 @@ def test_verify_deps_with_abx_pkg():
     EnvProvider.model_rebuild()
 
     # Verify node is available
-    node_binary = Binary(name='node', binproviders=[EnvProvider()])
+    node_binary = Binary(name='bun', binproviders=[EnvProvider()])
     node_loaded = node_binary.load()
     assert node_loaded and node_loaded.abspath, "Node.js required for pdf plugin"
 
@@ -69,7 +69,7 @@ def test_extracts_pdf_from_example_com():
 
             # Run PDF extraction hook
             result = subprocess.run(
-                ['node', str(PDF_HOOK), f'--url={TEST_URL}', '--snapshot-id=test789'],
+                ['bun', str(PDF_HOOK), f'--url={TEST_URL}', '--snapshot-id=test789'],
                 cwd=pdf_dir,
                 capture_output=True,
                 text=True,
@@ -126,7 +126,7 @@ def test_config_save_pdf_false_skips():
         env['PDF_ENABLED'] = 'False'
 
         result = subprocess.run(
-            ['node', str(PDF_HOOK), f'--url={TEST_URL}', '--snapshot-id=test999'],
+            ['bun', str(PDF_HOOK), f'--url={TEST_URL}', '--snapshot-id=test999'],
             cwd=tmpdir,
             capture_output=True,
             text=True,
@@ -155,7 +155,7 @@ def test_reports_missing_chrome():
         pdf_dir.mkdir(parents=True, exist_ok=True)
 
         result = subprocess.run(
-            ['node', str(PDF_HOOK), f'--url={TEST_URL}', '--snapshot-id=test123'],
+            ['bun', str(PDF_HOOK), f'--url={TEST_URL}', '--snapshot-id=test123'],
             cwd=pdf_dir,
             capture_output=True,
             text=True,
@@ -178,7 +178,7 @@ def test_runs_with_shared_chrome_session():
             pdf_dir.mkdir(exist_ok=True)
 
             result = subprocess.run(
-                ['node', str(PDF_HOOK), f'--url={TEST_URL}', '--snapshot-id=testtimeout'],
+                ['bun', str(PDF_HOOK), f'--url={TEST_URL}', '--snapshot-id=testtimeout'],
                 cwd=pdf_dir,
                 capture_output=True,
                 text=True,

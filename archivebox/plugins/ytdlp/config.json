@@ -22,11 +22,11 @@
       "x-aliases": ["YOUTUBEDL_BINARY", "YOUTUBE_DL_BINARY"],
       "description": "Path to yt-dlp binary"
     },
-    "YTDLP_NODE_BINARY": {
+    "YTDLP_BUN_BINARY": {
       "type": "string",
-      "default": "node",
-      "x-fallback": "NODE_BINARY",
-      "description": "Path to Node.js binary for yt-dlp JS runtime"
+      "default": "bun",
+      "x-fallback": "BUN_BINARY",
+      "description": "Path to Bun binary for yt-dlp JS runtime"
     },
     "YTDLP_TIMEOUT": {
       "type": "integer",

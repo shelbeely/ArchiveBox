@@ -67,7 +67,7 @@ class TestDNSWithChrome(TestCase):
             dns_dir.mkdir(exist_ok=True)
 
             result = subprocess.Popen(
-                ['node', str(DNS_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
+                ['bun', str(DNS_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
                 cwd=str(dns_dir),
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
@@ -76,7 +76,7 @@ class TestDNSWithChrome(TestCase):
             )
 
             nav_result = subprocess.run(
-                ['node', str(CHROME_NAVIGATE_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
+                ['bun', str(CHROME_NAVIGATE_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
                 cwd=str(snapshot_chrome_dir),
                 capture_output=True,
                 text=True,

@@ -53,7 +53,7 @@ def test_verify_deps_with_abx_pkg():
     EnvProvider.model_rebuild()
 
     # Verify node is available
-    node_binary = Binary(name='node', binproviders=[EnvProvider()])
+    node_binary = Binary(name='bun', binproviders=[EnvProvider()])
     node_loaded = node_binary.load()
     assert node_loaded and node_loaded.abspath, "Node.js required for singlefile plugin"
 
@@ -79,7 +79,7 @@ def test_singlefile_cli_archives_example_com():
         })
 
         result = subprocess.run(
-            ['node', str(INSTALL_SCRIPT)],
+            ['bun', str(INSTALL_SCRIPT)],
             capture_output=True,
             text=True,
             env=env_install,
@@ -209,7 +209,7 @@ def test_singlefile_with_extension_uses_existing_chrome():
 
         # Install SingleFile extension cache before launching Chrome
         result = subprocess.run(
-            ['node', str(INSTALL_SCRIPT)],
+            ['bun', str(INSTALL_SCRIPT)],
             capture_output=True,
             text=True,
             env=env_install,

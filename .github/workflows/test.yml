@@ -30,10 +30,8 @@ jobs:
           python-version: ${{ matrix.python }}
           architecture: x64
 
-      - name: Set up Node JS
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20.10.0
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Setup PDM
         uses: pdm-project/setup-pdm@v3
@@ -67,26 +65,21 @@ jobs:
           python -m pip install -r requirements.txt
           python -m pip install -e .[sonic,ldap]
 
-      - name: Get npm cache dir
-        id: npm-cache
-        run: |
-          echo "::set-output name=dir::$GITHUB_WORKSPACE/node_modules"
-
-      - name: Cache npm
+      - name: Cache bun
         uses: actions/cache@v3
-        id: cache-npm
+        id: cache-bun
         with:
-          path: ${{ steps.npm-cache.outputs.dir }}
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
+          path: ~/.bun
+          key: ${{ runner.os }}-bun-${{ hashFiles('etc/package.json') }}
           restore-keys: |
-            ${{ runner.os }}-node_modules
+            ${{ runner.os }}-bun
 
-      - name: Install npm requirements
+      - name: Install bun requirements
         run: |
-          npm install
-          echo "SINGLEFILE_BINARY=$GITHUB_WORKSPACE/node_modules/.bin/single-file" >> $GITHUB_ENV
-          echo "READABILITY_BINARY=$GITHUB_WORKSPACE/node_modules/.bin/readability-extractor" >> $GITHUB_ENV
-          echo "MERCURY_BINARY=$GITHUB_WORKSPACE/node_modules/.bin/mercury-parser" >> $GITHUB_ENV
+          bun install --cwd etc
+          echo "SINGLEFILE_BINARY=$GITHUB_WORKSPACE/etc/node_modules/.bin/single-file" >> $GITHUB_ENV
+          echo "READABILITY_BINARY=$GITHUB_WORKSPACE/etc/node_modules/.bin/readability-extractor" >> $GITHUB_ENV
+          echo "MERCURY_BINARY=$GITHUB_WORKSPACE/etc/node_modules/.bin/mercury-parser" >> $GITHUB_ENV
 
       ### Run the tests
       - name: Directory listing for debugging

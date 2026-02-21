@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /**
  * Save a page using the SingleFile Chrome extension via an existing Chrome session.
  *

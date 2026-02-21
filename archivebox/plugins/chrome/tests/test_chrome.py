@@ -104,7 +104,7 @@ function getTargets() {
 """
 
     result = subprocess.run(
-        ['node', '-e', node_script],
+        ['bun', '-e', node_script],
         capture_output=True,
         text=True,
         timeout=30,
@@ -175,7 +175,7 @@ def test_chrome_launch_and_tab_creation():
 
         # Launch Chrome at crawl level (background process)
         chrome_launch_process = subprocess.Popen(
-            ['node', str(CHROME_LAUNCH_HOOK), '--crawl-id=test-crawl-123'],
+            ['bun', str(CHROME_LAUNCH_HOOK), '--crawl-id=test-crawl-123'],
             cwd=str(chrome_dir),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -243,7 +243,7 @@ def test_chrome_launch_and_tab_creation():
         # Launch tab at snapshot level
         env['CRAWL_OUTPUT_DIR'] = str(crawl_dir)
         result = subprocess.run(
-            ['node', str(CHROME_TAB_HOOK), '--url=https://example.com', '--snapshot-id=snap-123', '--crawl-id=test-crawl-123'],
+            ['bun', str(CHROME_TAB_HOOK), '--url=https://example.com', '--snapshot-id=snap-123', '--crawl-id=test-crawl-123'],
             cwd=str(snapshot_chrome_dir),
             capture_output=True,
             text=True,
@@ -302,7 +302,7 @@ def test_cookies_imported_on_launch():
         })
 
         chrome_launch_process = subprocess.Popen(
-            ['node', str(CHROME_LAUNCH_HOOK), '--crawl-id=test-crawl-cookies'],
+            ['bun', str(CHROME_LAUNCH_HOOK), '--crawl-id=test-crawl-cookies'],
             cwd=str(chrome_dir),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -354,7 +354,7 @@ def test_chrome_navigation():
 
         # Launch Chrome (background process)
         chrome_launch_process = subprocess.Popen(
-            ['node', str(CHROME_LAUNCH_HOOK), '--crawl-id=test-crawl-nav'],
+            ['bun', str(CHROME_LAUNCH_HOOK), '--crawl-id=test-crawl-nav'],
             cwd=str(chrome_dir),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -374,7 +374,7 @@ def test_chrome_navigation():
         snapshot_chrome_dir.mkdir()
 
         result = subprocess.run(
-            ['node', str(CHROME_TAB_HOOK), '--url=https://example.com', '--snapshot-id=snap-nav-123', '--crawl-id=test-crawl-nav'],
+            ['bun', str(CHROME_TAB_HOOK), '--url=https://example.com', '--snapshot-id=snap-nav-123', '--crawl-id=test-crawl-nav'],
             cwd=str(snapshot_chrome_dir),
             capture_output=True,
             text=True,
@@ -385,7 +385,7 @@ def test_chrome_navigation():
 
         # Navigate to URL
         result = subprocess.run(
-            ['node', str(CHROME_NAVIGATE_HOOK), '--url=https://example.com', '--snapshot-id=snap-nav-123'],
+            ['bun', str(CHROME_NAVIGATE_HOOK), '--url=https://example.com', '--snapshot-id=snap-nav-123'],
             cwd=str(snapshot_chrome_dir),
             capture_output=True,
             text=True,
@@ -425,7 +425,7 @@ def test_tab_cleanup_on_sigterm():
 
         # Launch Chrome (background process)
         chrome_launch_process = subprocess.Popen(
-            ['node', str(CHROME_LAUNCH_HOOK), '--crawl-id=test-cleanup'],
+            ['bun', str(CHROME_LAUNCH_HOOK), '--crawl-id=test-cleanup'],
             cwd=str(chrome_dir),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -445,7 +445,7 @@ def test_tab_cleanup_on_sigterm():
         snapshot_chrome_dir.mkdir()
 
         tab_process = subprocess.Popen(
-            ['node', str(CHROME_TAB_HOOK), '--url=https://example.com', '--snapshot-id=snap-cleanup', '--crawl-id=test-cleanup'],
+            ['bun', str(CHROME_TAB_HOOK), '--url=https://example.com', '--snapshot-id=snap-cleanup', '--crawl-id=test-cleanup'],
             cwd=str(snapshot_chrome_dir),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -490,7 +490,7 @@ def test_multiple_snapshots_share_chrome():
 
         # Launch Chrome at crawl level
         chrome_launch_process = subprocess.Popen(
-            ['node', str(CHROME_LAUNCH_HOOK), '--crawl-id=test-multi-crawl'],
+            ['bun', str(CHROME_LAUNCH_HOOK), '--crawl-id=test-multi-crawl'],
             cwd=str(chrome_dir),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -520,7 +520,7 @@ def test_multiple_snapshots_share_chrome():
 
             # Create tab for this snapshot
             result = subprocess.run(
-                ['node', str(CHROME_TAB_HOOK), f'--url=https://example.com/{snap_num}', f'--snapshot-id=snap-{snap_num}', '--crawl-id=test-multi-crawl'],
+                ['bun', str(CHROME_TAB_HOOK), f'--url=https://example.com/{snap_num}', f'--snapshot-id=snap-{snap_num}', '--crawl-id=test-multi-crawl'],
                 cwd=str(snapshot_chrome_dir),
                 capture_output=True,
                 text=True,
@@ -576,7 +576,7 @@ def test_chrome_cleanup_on_crawl_end():
 
         # Launch Chrome in background
         chrome_launch_process = subprocess.Popen(
-            ['node', str(CHROME_LAUNCH_HOOK), '--crawl-id=test-crawl-end'],
+            ['bun', str(CHROME_LAUNCH_HOOK), '--crawl-id=test-crawl-end'],
             cwd=str(chrome_dir),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -622,7 +622,7 @@ def test_zombie_prevention_hook_killed():
 
         # Launch Chrome
         chrome_launch_process = subprocess.Popen(
-            ['node', str(CHROME_LAUNCH_HOOK), '--crawl-id=test-zombie'],
+            ['bun', str(CHROME_LAUNCH_HOOK), '--crawl-id=test-zombie'],
             cwd=str(chrome_dir),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,

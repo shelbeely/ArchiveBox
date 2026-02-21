@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /**
  * Scroll the page down to trigger infinite scroll / lazy loading.
  *

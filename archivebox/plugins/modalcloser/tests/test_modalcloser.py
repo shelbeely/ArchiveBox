@@ -48,7 +48,7 @@ def test_verify_deps_with_abx_pkg():
     EnvProvider.model_rebuild()
 
     # Verify node is available
-    node_binary = Binary(name='node', binproviders=[EnvProvider()])
+    node_binary = Binary(name='bun', binproviders=[EnvProvider()])
     node_loaded = node_binary.load()
     assert node_loaded and node_loaded.abspath, "Node.js required for modalcloser plugin"
 
@@ -61,7 +61,7 @@ def test_config_modalcloser_disabled_skips():
         env['MODALCLOSER_ENABLED'] = 'False'
 
         result = subprocess.run(
-            ['node', str(MODALCLOSER_HOOK), f'--url={TEST_URL}', '--snapshot-id=test-disabled'],
+            ['bun', str(MODALCLOSER_HOOK), f'--url={TEST_URL}', '--snapshot-id=test-disabled'],
             cwd=tmpdir,
             capture_output=True,
             text=True,
@@ -85,7 +85,7 @@ def test_fails_gracefully_without_chrome_session():
         modalcloser_dir.mkdir(parents=True, exist_ok=True)
 
         result = subprocess.run(
-            ['node', str(MODALCLOSER_HOOK), f'--url={TEST_URL}', '--snapshot-id=test-no-chrome'],
+            ['bun', str(MODALCLOSER_HOOK), f'--url={TEST_URL}', '--snapshot-id=test-no-chrome'],
             cwd=modalcloser_dir,
             capture_output=True,
             text=True,
@@ -120,7 +120,7 @@ def test_background_script_handles_sigterm():
                 env['MODALCLOSER_POLL_INTERVAL'] = '200'  # Faster polling for test
 
                 modalcloser_process = subprocess.Popen(
-                    ['node', str(MODALCLOSER_HOOK), f'--url={TEST_URL}', '--snapshot-id=snap-modalcloser'],
+                    ['bun', str(MODALCLOSER_HOOK), f'--url={TEST_URL}', '--snapshot-id=snap-modalcloser'],
                     cwd=str(modalcloser_dir),
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
@@ -190,7 +190,7 @@ def test_dialog_handler_logs_dialogs():
                 env['MODALCLOSER_POLL_INTERVAL'] = '200'
 
                 modalcloser_process = subprocess.Popen(
-                    ['node', str(MODALCLOSER_HOOK), f'--url={TEST_URL}', '--snapshot-id=snap-dialog'],
+                    ['bun', str(MODALCLOSER_HOOK), f'--url={TEST_URL}', '--snapshot-id=snap-dialog'],
                     cwd=str(modalcloser_dir),
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
@@ -240,7 +240,7 @@ def test_config_poll_interval():
                 env['MODALCLOSER_POLL_INTERVAL'] = '100'  # 100ms
 
                 modalcloser_process = subprocess.Popen(
-                    ['node', str(MODALCLOSER_HOOK), f'--url={TEST_URL}', '--snapshot-id=snap-poll'],
+                    ['bun', str(MODALCLOSER_HOOK), f'--url={TEST_URL}', '--snapshot-id=snap-poll'],
                     cwd=str(modalcloser_dir),
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
@@ -419,7 +419,7 @@ main().catch(e => {
         env = get_test_env()
 
         result = subprocess.run(
-            ['node', str(script_path)],
+            ['bun', str(script_path)],
             cwd=tmpdir,
             capture_output=True,
             text=True,

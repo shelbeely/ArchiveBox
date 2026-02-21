@@ -78,7 +78,7 @@ class TestStaticfileWithChrome(TestCase):
 
                 # Run staticfile hook with the active Chrome session (background hook)
                 result = subprocess.Popen(
-                    ['node', str(STATICFILE_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
+                    ['bun', str(STATICFILE_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
                     cwd=str(snapshot_chrome_dir),
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,

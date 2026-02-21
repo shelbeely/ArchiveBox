@@ -8,7 +8,7 @@ Output: Writes singlefile.html to $PWD
 Environment variables:
     SINGLEFILE_ENABLED: Enable SingleFile archiving (default: True)
     SINGLEFILE_BINARY: Path to SingleFile binary (default: single-file)
-    SINGLEFILE_NODE_BINARY: Path to Node.js binary (x-fallback: NODE_BINARY)
+    SINGLEFILE_BUN_BINARY: Path to Bun binary (x-fallback: BUN_BINARY)
     SINGLEFILE_CHROME_BINARY: Path to Chrome binary (x-fallback: CHROME_BINARY) [unused; shared Chrome session required]
     SINGLEFILE_TIMEOUT: Timeout in seconds (x-fallback: TIMEOUT)
     SINGLEFILE_USER_AGENT: User agent string (x-fallback: USER_AGENT)
@@ -266,14 +266,14 @@ def save_singlefile_with_extension(url: str, timeout: int) -> tuple[bool, str | 
         print(f'[singlefile] Missing helper script: {EXTENSION_SAVE_SCRIPT}', file=sys.stderr)
         return False, None, 'SingleFile extension helper script missing'
 
-    node_binary = get_env('SINGLEFILE_NODE_BINARY') or get_env('NODE_BINARY', 'node')
+    bun_binary = get_env('SINGLEFILE_BUN_BINARY') or get_env('BUN_BINARY', 'bun')
     downloads_dir = get_env('CHROME_DOWNLOADS_DIR', '')
     extensions_dir = get_env('CHROME_EXTENSIONS_DIR', '')
-    cmd = [node_binary, str(EXTENSION_SAVE_SCRIPT), f'--url={url}']
+    cmd = [bun_binary, str(EXTENSION_SAVE_SCRIPT), f'--url={url}']
     print(f'[singlefile] cdp_url={cdp_url}', file=sys.stderr)
-    print(f'[singlefile] node={node_binary}', file=sys.stderr)
-    node_resolved = shutil.which(node_binary) if node_binary else None
-    print(f'[singlefile] node_resolved={node_resolved}', file=sys.stderr)
+    print(f'[singlefile] bun={bun_binary}', file=sys.stderr)
+    bun_resolved = shutil.which(bun_binary) if bun_binary else None
+    print(f'[singlefile] bun_resolved={bun_resolved}', file=sys.stderr)
     print(f'[singlefile] PATH={os.environ.get("PATH","")}', file=sys.stderr)
     if downloads_dir:
         print(f'[singlefile] CHROME_DOWNLOADS_DIR={downloads_dir}', file=sys.stderr)

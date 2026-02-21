@@ -50,7 +50,7 @@ def test_verify_deps_with_abx_pkg():
     EnvProvider.model_rebuild()
 
     # Verify node is available
-    node_binary = Binary(name='node', binproviders=[EnvProvider()])
+    node_binary = Binary(name='bun', binproviders=[EnvProvider()])
     node_loaded = node_binary.load()
     assert node_loaded and node_loaded.abspath, "Node.js required for dom plugin"
 
@@ -68,7 +68,7 @@ def test_extracts_dom_from_example_com():
 
             # Run DOM extraction hook
             result = subprocess.run(
-                ['node', str(DOM_HOOK), f'--url={TEST_URL}', '--snapshot-id=test789'],
+                ['bun', str(DOM_HOOK), f'--url={TEST_URL}', '--snapshot-id=test789'],
                 cwd=dom_dir,
                 capture_output=True,
                 text=True,
@@ -118,7 +118,7 @@ def test_config_save_dom_false_skips():
         env['DOM_ENABLED'] = 'False'
 
         result = subprocess.run(
-            ['node', str(DOM_HOOK), f'--url={TEST_URL}', '--snapshot-id=test999'],
+            ['bun', str(DOM_HOOK), f'--url={TEST_URL}', '--snapshot-id=test999'],
             cwd=tmpdir,
             capture_output=True,
             text=True,
@@ -153,7 +153,7 @@ def test_staticfile_present_skips():
         dom_dir.mkdir()
 
         result = subprocess.run(
-            ['node', str(DOM_HOOK), f'--url={TEST_URL}', '--snapshot-id=teststatic'],
+            ['bun', str(DOM_HOOK), f'--url={TEST_URL}', '--snapshot-id=teststatic'],
             cwd=dom_dir,  # Run from dom subdirectory
             capture_output=True,
             text=True,

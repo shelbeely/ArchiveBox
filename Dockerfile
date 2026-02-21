@@ -1,7 +1,7 @@
 # This is the Dockerfile for ArchiveBox, it bundles the following main dependencies:
 #     python3.14, pip, pipx, uv, python3-ldap
 #     curl, wget, git, dig, ping, tree, nano
-#     node, npm, single-file, readability-extractor, postlight-parser
+#     bun, single-file, readability-extractor, postlight-parser
 #     ArchiveBox, yt-dlp, playwright, chromium
 # Usage:
 #     git clone https://github.com/ArchiveBox/ArchiveBox && cd ArchiveBox
@@ -65,12 +65,11 @@ ENV TZ=UTC \
     APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 \
     PYTHONIOENCODING=UTF-8 \
     PYTHONUNBUFFERED=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    npm_config_loglevel=error
+    PIP_DISABLE_PIP_VERSION_CHECK=1
 
 # Language Version config
 ENV PYTHON_VERSION=3.13 \
-    NODE_VERSION=22
+    BUN_VERSION=latest
 
 # Non-root User config
 ENV ARCHIVEBOX_USER="archivebox" \
@@ -105,7 +104,7 @@ RUN (echo "[i] Docker build for ArchiveBox starting..." \
     && echo "PLATFORM=${TARGETPLATFORM} ARCH=$(uname -m) ($(uname -s) ${TARGETARCH} ${TARGETVARIANT})" \
     && echo "BUILD_START_TIME=$(date +"%Y-%m-%d %H:%M:%S %s") TZ=${TZ} LANG=${LANG}" \
     && echo \
-    && echo "PYTHON=${PYTHON_VERSION} NODE=${NODE_VERSION} PATH=${PATH}" \
+    && echo "PYTHON=${PYTHON_VERSION} BUN=${BUN_VERSION} PATH=${PATH}" \
     && echo "CODE_DIR=${CODE_DIR} DATA_DIR=${DATA_DIR}" \
     && echo \
     && uname -a \
@@ -196,23 +195,13 @@ RUN (which sonic && sonic --version) | tee -a /VERSION.txt
     # ) | tee -a /VERSION.txt
 
 
-# Set up Node environment
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apt-$TARGETARCH$TARGETVARIANT \
-    --mount=type=cache,target=/root/.npm,sharing=locked,id=npm-$TARGETARCH$TARGETVARIANT \
-    echo "[+] APT Installing NODE $NODE_VERSION for $TARGETPLATFORM..." \
-    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODE_VERSION}.x nodistro main" >> /etc/apt/sources.list.d/nodejs.list \
-    && curl -fsSL "https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key" | gpg --dearmor | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
-    && apt-get update -qq \
-    && apt-get install -qq -y --no-upgrade libatomic1 \
-    && apt-get install -y --no-upgrade \
-        nodejs \
-    && rm -rf /var/lib/apt/lists/* \
-    # Update NPM to latest version
-    && npm i -g npm --cache /root/.npm \
-    # Save version info
+# Install Bun
+RUN --mount=type=cache,target=/root/.bun,sharing=locked,id=bun-$TARGETARCH$TARGETVARIANT \
+    echo "[+] Installing Bun ${BUN_VERSION} for $TARGETPLATFORM..." \
+    && curl -fsSL https://bun.sh/install | bash \
+    && ln -s "$HOME/.bun/bin/bun" /usr/local/bin/bun \
     && ( \
-        which node && node --version \
-        && which npm && npm --version \
+        which bun && bun --version \
         && echo -e '\n\n' \
     ) | tee -a /VERSION.txt
 
@@ -301,25 +290,24 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apt-$TARGETARCH$T
         && echo -e '\n\n' \
     ) | tee -a /VERSION.txt
 
-# Install Node extractor dependencies
-ENV PATH="/home/$ARCHIVEBOX_USER/.npm/bin:$PATH"
+# Install Bun extractor dependencies
+ENV BUN_INSTALL="/home/$ARCHIVEBOX_USER/.bun"
+ENV PATH="$BUN_INSTALL/bin:$PATH"
 USER $ARCHIVEBOX_USER
-WORKDIR "/home/$ARCHIVEBOX_USER/.npm"
-RUN --mount=type=cache,target=/home/archivebox/.npm_cache,sharing=locked,id=npm-$TARGETARCH$TARGETVARIANT,uid=$DEFAULT_PUID,gid=$DEFAULT_PGID \
-    echo "[+] NPM Installing node extractor dependencies into /home/$ARCHIVEBOX_USER/.npm..." \
-    && npm config set prefix "/home/$ARCHIVEBOX_USER/.npm" \
-    && npm install --global --prefer-offline --no-fund --no-audit --cache "/home/$ARCHIVEBOX_USER/.npm_cache" \
+WORKDIR "/home/$ARCHIVEBOX_USER"
+RUN --mount=type=cache,target=/home/archivebox/.bun_cache,sharing=locked,id=bun-packages-$TARGETARCH$TARGETVARIANT,uid=$DEFAULT_PUID,gid=$DEFAULT_PGID \
+    echo "[+] Bun Installing extractor dependencies globally into /home/$ARCHIVEBOX_USER/.bun..." \
+    && bun add -g \
         "@postlight/parser@^2.2.3" \
-        "readability-extractor@github:ArchiveBox/readability-extractor" \
         "single-file-cli@^1.1.54" \
         "puppeteer@^23.5.0" \
         "@puppeteer/browsers@^2.4.0" \
+    && bun add -g "readability-extractor@github:ArchiveBox/readability-extractor" \
     && rm -Rf "/home/$ARCHIVEBOX_USER/.cache/puppeteer"
 USER root
 WORKDIR "$CODE_DIR"
 RUN ( \
-        which node && node --version \
-        && which npm && npm version \
+        which bun && bun --version \
         && which postlight-parser \
         && which readability-extractor && readability-extractor --version \
         && which single-file && single-file --version \

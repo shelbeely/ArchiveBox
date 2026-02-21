@@ -154,7 +154,7 @@ def test_extension_loads_in_chromium():
 
         # Step 1: Install the extension
         result = subprocess.run(
-            ['node', str(INSTALL_SCRIPT)],
+            ['bun', str(INSTALL_SCRIPT)],
             cwd=str(tmpdir),
             capture_output=True,
             text=True,
@@ -178,7 +178,7 @@ def test_extension_loads_in_chromium():
         env['CRAWL_OUTPUT_DIR'] = str(crawl_dir)
 
         chrome_launch_process = subprocess.Popen(
-            ['node', str(CHROME_LAUNCH_HOOK), f'--crawl-id={crawl_id}'],
+            ['bun', str(CHROME_LAUNCH_HOOK), f'--crawl-id={crawl_id}'],
             cwd=str(chrome_dir),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -291,7 +291,7 @@ const puppeteer = require('puppeteer-core');
             script_path.write_text(test_script)
 
             result = subprocess.run(
-                ['node', str(script_path)],
+                ['bun', str(script_path)],
                 cwd=str(tmpdir),
                 capture_output=True,
                 text=True,
@@ -443,7 +443,7 @@ const puppeteer = require('puppeteer-core');
     script_path.write_text(test_script)
 
     result = subprocess.run(
-        ['node', str(script_path)],
+        ['bun', str(script_path)],
         cwd=str(script_dir),
         capture_output=True,
         text=True,
@@ -557,7 +557,7 @@ def test_hides_cookie_consent_on_filmin():
         env_with_ext['CHROME_EXTENSIONS_DIR'] = str(ext_dir)
 
         result = subprocess.run(
-            ['node', str(INSTALL_SCRIPT)],
+            ['bun', str(INSTALL_SCRIPT)],
             cwd=str(tmpdir),
             capture_output=True,
             text=True,
