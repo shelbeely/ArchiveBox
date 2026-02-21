@@ -379,6 +379,7 @@ async function launchChromium(options = {}) {
         headless = getEnvBool('CHROME_HEADLESS', true),
         sandbox = getEnvBool('CHROME_SANDBOX', true),
         checkSsl = getEnvBool('CHROME_CHECK_SSL_VALIDITY', getEnvBool('CHECK_SSL_VALIDITY', true)),
+        proxy = getEnv('CHROME_PROXY') || getEnv('UPSTREAM_PROXY', ''),
         extensionPaths = [],
         killZombies = true,
     } = options;
@@ -479,6 +480,9 @@ async function launchChromium(options = {}) {
 
         // SSL certificate checking
         ...(checkSsl ? [] : ['--ignore-certificate-errors']),
+
+        // Upstream proxy
+        ...(proxy ? [`--proxy-server=${proxy}`] : []),
     ];
 
     // Combine all args: base (from config) + dynamic (runtime) + extra (user overrides)

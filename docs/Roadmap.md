@@ -44,7 +44,7 @@
 - 🛠 Multi-user support with separate personas/credentials
 - 📅 Remove Seed model (v0.9.x — Crawl model now stores URLs directly, Seed model removed)
 
-### `v1.0: Full headless browser control` 📅 Planned
+### `v1.0: Full headless browser control` 🛠 In Progress
 
 - ✅ Run user-scripts / extensions in the context of the page during archiving (via plugin hooks)
   - ✅ `ublock` — uBlock Origin ad blocking extension support
@@ -52,10 +52,13 @@
   - ✅ `modalcloser` — Modal dialog dismissal
   - ✅ `infiniscroll` — Infinite scroll handler
   - ✅ `twocaptcha` — 2captcha CAPTCHA solver integration
-- 📅 Community userscripts for unrolling twitter threads, reddit threads, youtube comment sections, etc.
+- ✅ Community userscripts for unrolling twitter threads, reddit threads, youtube comment sections, etc.
+  - ✅ `twitter_thread_unroll` — expand "Show more replies" and thread continuations on Twitter/X
+  - ✅ `reddit_thread_expand` — expand collapsed comments and "load more" on Reddit
+  - ✅ `youtube_comments_expand` — scroll and expand replies in YouTube comment sections
 - 📅 pywb-based headless browser session recording and WARC replay
-- 📅 Archive proxy support
-  - 📅 Support sending upstream requests through an external proxy
+- ✅ Archive proxy support
+  - ✅ Support sending upstream requests through an external proxy (`UPSTREAM_PROXY` config, supported by `wget` and `chrome`)
   - 📅 Support for exposing a proxy that archives all downstream traffic
 
 ...

@@ -143,6 +143,8 @@ class ArchivingConfig(BaseConfigSet):
     )
     COOKIES_FILE: Path | None = Field(default=None)
 
+    UPSTREAM_PROXY: str | None = Field(default=None)
+
     URL_DENYLIST: str = Field(default=r"\.(css|js|otf|ttf|woff|woff2|gstatic\.com|googleapis\.com/css)(\?.*)?$", alias="URL_BLACKLIST")
     URL_ALLOWLIST: str | None = Field(default=None, alias="URL_WHITELIST")
 

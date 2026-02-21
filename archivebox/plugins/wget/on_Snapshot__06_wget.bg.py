@@ -15,6 +15,7 @@ Environment variables:
     WGET_CHECK_SSL_VALIDITY: Whether to check SSL certificates (x-fallback: CHECK_SSL_VALIDITY)
     WGET_ARGS: Default wget arguments (JSON array)
     WGET_ARGS_EXTRA: Extra arguments to append (JSON array)
+    WGET_PROXY: Upstream proxy URL (x-fallback: UPSTREAM_PROXY)
 """
 
 import json
@@ -107,6 +108,7 @@ def save_wget(url: str, binary: str) -> tuple[bool, str | None, str]:
     cookies_file = get_env('WGET_COOKIES_FILE') or get_env('COOKIES_FILE', '')
     wget_args = get_env_array('WGET_ARGS', [])
     wget_args_extra = get_env_array('WGET_ARGS_EXTRA', [])
+    proxy = get_env('WGET_PROXY') or get_env('UPSTREAM_PROXY', '')
 
     # Feature toggles
     warc_enabled = get_env_bool('WGET_WARC_ENABLED', True)
@@ -134,6 +136,13 @@ def save_wget(url: str, binary: str) -> tuple[bool, str | None, str]:
 
     if not check_ssl:
         cmd.extend(['--no-check-certificate', '--no-hsts'])
+
+    if proxy:
+        cmd.extend([
+            '-e', 'use_proxy=yes',
+            '-e', f'http_proxy={proxy}',
+            '-e', f'https_proxy={proxy}',
+        ])
 
     if wget_args_extra:
         cmd.extend(wget_args_extra)
