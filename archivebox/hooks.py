@@ -377,11 +377,11 @@ def run_hook(
     else:
         env['PATH'] = current_path
 
-    # Set NODE_PATH for Bun module resolution
+    # Set NODE_PATH for Bun module resolution (Bun respects NODE_PATH for compatibility)
     # Priority: config dict > Machine.config > derive from LIB_DIR
     node_path = config.get('NODE_PATH')
     if not node_path and lib_dir:
-        # Derive from LIB_DIR/bun/node_modules (create if needed)
+        # Derive from LIB_DIR/bun/node_modules (maintaining Node.js-style path for compatibility)
         node_modules_dir = Path(lib_dir) / 'bun' / 'node_modules'
         node_modules_dir.mkdir(parents=True, exist_ok=True)
         node_path = str(node_modules_dir)

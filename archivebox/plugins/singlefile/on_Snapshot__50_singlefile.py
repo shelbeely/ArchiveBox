@@ -266,14 +266,14 @@ def save_singlefile_with_extension(url: str, timeout: int) -> tuple[bool, str | 
         print(f'[singlefile] Missing helper script: {EXTENSION_SAVE_SCRIPT}', file=sys.stderr)
         return False, None, 'SingleFile extension helper script missing'
 
-    node_binary = get_env('SINGLEFILE_BUN_BINARY') or get_env('BUN_BINARY', 'bun')
+    bun_binary = get_env('SINGLEFILE_BUN_BINARY') or get_env('BUN_BINARY', 'bun')
     downloads_dir = get_env('CHROME_DOWNLOADS_DIR', '')
     extensions_dir = get_env('CHROME_EXTENSIONS_DIR', '')
-    cmd = [node_binary, str(EXTENSION_SAVE_SCRIPT), f'--url={url}']
+    cmd = [bun_binary, str(EXTENSION_SAVE_SCRIPT), f'--url={url}']
     print(f'[singlefile] cdp_url={cdp_url}', file=sys.stderr)
-    print(f'[singlefile] bun={node_binary}', file=sys.stderr)
-    node_resolved = shutil.which(node_binary) if node_binary else None
-    print(f'[singlefile] bun_resolved={node_resolved}', file=sys.stderr)
+    print(f'[singlefile] bun={bun_binary}', file=sys.stderr)
+    bun_resolved = shutil.which(bun_binary) if bun_binary else None
+    print(f'[singlefile] bun_resolved={bun_resolved}', file=sys.stderr)
     print(f'[singlefile] PATH={os.environ.get("PATH","")}', file=sys.stderr)
     if downloads_dir:
         print(f'[singlefile] CHROME_DOWNLOADS_DIR={downloads_dir}', file=sys.stderr)

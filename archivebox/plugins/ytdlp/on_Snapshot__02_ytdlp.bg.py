@@ -97,7 +97,7 @@ def save_ytdlp(url: str, binary: str) -> tuple[bool, str | None, str]:
     check_ssl = get_env_bool('YTDLP_CHECK_SSL_VALIDITY', True) if get_env('YTDLP_CHECK_SSL_VALIDITY') else get_env_bool('CHECK_SSL_VALIDITY', True)
     cookies_file = get_env('YTDLP_COOKIES_FILE') or get_env('COOKIES_FILE', '')
     max_size = get_env('YTDLP_MAX_SIZE', '750m')
-    node_binary = get_env('YTDLP_BUN_BINARY') or get_env('BUN_BINARY', 'bun')
+    bun_binary = get_env('YTDLP_BUN_BINARY') or get_env('BUN_BINARY', 'bun')
     ytdlp_args = get_env_array('YTDLP_ARGS', [])
     ytdlp_args_extra = get_env_array('YTDLP_ARGS_EXTRA', [])
 
@@ -110,7 +110,7 @@ def save_ytdlp(url: str, binary: str) -> tuple[bool, str | None, str]:
         *ytdlp_args,
         # Format with max_size limit (appended after YTDLP_ARGS so it can be overridden by YTDLP_ARGS_EXTRA)
         f'--format=(bv*+ba/b)[filesize<={max_size}][filesize_approx<=?{max_size}]/(bv*+ba/b)',
-        f'--js-runtimes=node:{node_binary}',
+        f'--js-runtimes=bun:{bun_binary}',
     ]
 
     if not check_ssl:
