@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /**
  * Create a Chrome tab for this snapshot in the shared crawl Chrome session.
  *

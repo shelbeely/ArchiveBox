@@ -8,7 +8,7 @@ Output: Downloads video/audio files to $PWD
 Environment variables:
     YTDLP_ENABLED: Enable yt-dlp extraction (default: True)
     YTDLP_BINARY: Path to yt-dlp binary (default: yt-dlp)
-    YTDLP_NODE_BINARY: Path to Node.js binary (x-fallback: NODE_BINARY)
+    YTDLP_BUN_BINARY: Path to Bun binary (x-fallback: BUN_BINARY)
     YTDLP_TIMEOUT: Timeout in seconds (x-fallback: TIMEOUT)
     YTDLP_COOKIES_FILE: Path to cookies file (x-fallback: COOKIES_FILE)
     YTDLP_MAX_SIZE: Maximum file size (default: 750m)
@@ -97,7 +97,7 @@ def save_ytdlp(url: str, binary: str) -> tuple[bool, str | None, str]:
     check_ssl = get_env_bool('YTDLP_CHECK_SSL_VALIDITY', True) if get_env('YTDLP_CHECK_SSL_VALIDITY') else get_env_bool('CHECK_SSL_VALIDITY', True)
     cookies_file = get_env('YTDLP_COOKIES_FILE') or get_env('COOKIES_FILE', '')
     max_size = get_env('YTDLP_MAX_SIZE', '750m')
-    node_binary = get_env('YTDLP_NODE_BINARY') or get_env('NODE_BINARY', 'node')
+    node_binary = get_env('YTDLP_BUN_BINARY') or get_env('BUN_BINARY', 'bun')
     ytdlp_args = get_env_array('YTDLP_ARGS', [])
     ytdlp_args_extra = get_env_array('YTDLP_ARGS_EXTRA', [])
 

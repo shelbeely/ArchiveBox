@@ -104,7 +104,7 @@ def _call_chrome_utils(command: str, *args: str, env: Optional[dict] = None) -> 
     Returns:
         Tuple of (returncode, stdout, stderr)
     """
-    cmd = ['node', str(CHROME_UTILS), command] + list(args)
+    cmd = ['bun', str(CHROME_UTILS), command] + list(args)
     result = subprocess.run(
         cmd,
         capture_output=True,
@@ -435,7 +435,7 @@ def run_hook(
     if hook_script.suffix == '.py':
         cmd = [sys.executable, str(hook_script)]
     elif hook_script.suffix == '.js':
-        cmd = ['node', str(hook_script)]
+        cmd = ['bun', str(hook_script)]
     else:
         cmd = [str(hook_script)]
 
@@ -738,7 +738,7 @@ def launch_chromium_session(env: dict, chrome_dir: Path, crawl_id: str) -> Tuple
     chrome_dir.mkdir(parents=True, exist_ok=True)
 
     chrome_launch_process = subprocess.Popen(
-        ['node', str(CHROME_LAUNCH_HOOK), f'--crawl-id={crawl_id}'],
+        ['bun', str(CHROME_LAUNCH_HOOK), f'--crawl-id={crawl_id}'],
         cwd=str(chrome_dir),
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -931,7 +931,7 @@ def chrome_session(
 
         # Launch Chrome at crawl level
         chrome_launch_process = subprocess.Popen(
-            ['node', str(CHROME_LAUNCH_HOOK), f'--crawl-id={crawl_id}'],
+            ['bun', str(CHROME_LAUNCH_HOOK), f'--crawl-id={crawl_id}'],
             cwd=str(chrome_dir),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -964,7 +964,7 @@ def chrome_session(
         tab_env['CRAWL_OUTPUT_DIR'] = str(crawl_dir)
         try:
             result = subprocess.run(
-                ['node', str(CHROME_TAB_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}', f'--crawl-id={crawl_id}'],
+                ['bun', str(CHROME_TAB_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}', f'--crawl-id={crawl_id}'],
                 cwd=str(snapshot_chrome_dir),
                 capture_output=True,
                 text=True,
@@ -982,7 +982,7 @@ def chrome_session(
         if navigate and CHROME_NAVIGATE_HOOK and test_url != 'about:blank':
             try:
                 result = subprocess.run(
-                    ['node', str(CHROME_NAVIGATE_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
+                    ['bun', str(CHROME_NAVIGATE_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
                     cwd=str(snapshot_chrome_dir),
                     capture_output=True,
                     text=True,

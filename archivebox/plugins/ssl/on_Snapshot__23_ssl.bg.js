@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /**
  * Extract SSL/TLS certificate details from a URL.
  *

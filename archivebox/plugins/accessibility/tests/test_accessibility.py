@@ -76,7 +76,7 @@ class TestAccessibilityWithChrome(TestCase):
 
                 # Run accessibility hook with the active Chrome session
                 result = subprocess.run(
-                    ['node', str(ACCESSIBILITY_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
+                    ['bun', str(ACCESSIBILITY_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
                     cwd=str(snapshot_chrome_dir),
                     capture_output=True,
                     text=True,
@@ -120,7 +120,7 @@ class TestAccessibilityWithChrome(TestCase):
         env['ACCESSIBILITY_ENABLED'] = 'False'
 
         result = subprocess.run(
-            ['node', str(ACCESSIBILITY_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
+            ['bun', str(ACCESSIBILITY_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
             cwd=str(self.temp_dir),
             capture_output=True,
             text=True,
@@ -140,7 +140,7 @@ class TestAccessibilityWithChrome(TestCase):
         snapshot_id = 'test-missing-url'
 
         result = subprocess.run(
-            ['node', str(ACCESSIBILITY_HOOK), f'--snapshot-id={snapshot_id}'],
+            ['bun', str(ACCESSIBILITY_HOOK), f'--snapshot-id={snapshot_id}'],
             cwd=str(self.temp_dir),
             capture_output=True,
             text=True,
@@ -156,7 +156,7 @@ class TestAccessibilityWithChrome(TestCase):
         test_url = 'https://example.com'
 
         result = subprocess.run(
-            ['node', str(ACCESSIBILITY_HOOK), f'--url={test_url}'],
+            ['bun', str(ACCESSIBILITY_HOOK), f'--url={test_url}'],
             cwd=str(self.temp_dir),
             capture_output=True,
             text=True,
@@ -173,7 +173,7 @@ class TestAccessibilityWithChrome(TestCase):
         snapshot_id = 'test-no-chrome'
 
         result = subprocess.run(
-            ['node', str(ACCESSIBILITY_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
+            ['bun', str(ACCESSIBILITY_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
             cwd=str(self.temp_dir),
             capture_output=True,
             text=True,

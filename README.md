@@ -259,13 +259,13 @@ See <a href="https://docs.sweeting.me/s/against-curl-sh">"Against curl | sh as a
 <br/>
 <ol>
 
-<li>Install <a href="https://realpython.com/installing-python/">Python >= v3.10</a> and <a href="https://nodejs.org/en/download/package-manager/">Node >= v18</a> on your system (if not already installed).</li>
+<li>Install <a href="https://realpython.com/installing-python/">Python >= v3.10</a> and <a href="https://bun.sh/">Bun</a> on your system (if not already installed).</li>
 <li>Install the ArchiveBox package using <code>pip3</code> (or <a href="https://docs.astral.sh/uv/guides/tools/#running-tools"><code>uvx</code></a>).
 <pre lang="bash"><code style="white-space: pre-line">pip3 install --upgrade archivebox yt-dlp playwright
 playwright install --with-deps chromium
 archivebox version
 # install any missing extras shown using apt/brew/pkg/etc. see Wiki for instructions
-#    python@3.10 node curl wget git ripgrep ...
+#    python@3.10 bun curl wget git ripgrep ...
 </code></pre>
 <i>See the <a href="https://github.com/ArchiveBox/ArchiveBox/wiki/Install">Install: Bare Metal</a> Wiki for full install instructions for each OS...</i>
 </li>
@@ -809,7 +809,7 @@ ArchiveBox bundles industry-standard tools like [Google Chrome](https://github.c
 <li>Database: <a href="https://docs.djangoproject.com/en/5.1/ref/databases/#sqlite-notes">Django ORM</a> saving to <a href="https://www.sqlite.org/mostdeployed.html">SQLite3</a> <code>./data/index.sqlite</code></li>
 <li>Job Queue: <a href="https://huey.readthedocs.io/">Huey</a> using <code>./data/queue.sqlite3</code> under <code>supervisord</code></li>
 <li>Build/test/lint: <a href="https://github.com/pdm-project/pdm"><code>pdm</code></a> / <code>mypy</code>+<code>pyright</code>+<code>pytest</code> / <code>ruff</code></li>
-<li>Subdependencies: <a href="https://github.com/ArchiveBox/abx-pkg"><code>abx-pkg</code></a> installs apt/brew/pip/npm pkgs at runtime (e.g. <code>yt-dlp</code>, <code>singlefile</code>, <code>readability</code>, <code>git</code>)</li>
+<li>Subdependencies: <a href="https://github.com/ArchiveBox/abx-pkg"><code>abx-pkg</code></a> installs apt/brew/pip/bun pkgs at runtime (e.g. <code>yt-dlp</code>, <code>singlefile</code>, <code>readability</code>, <code>git</code>)</li>
 </ul>
 
 
@@ -819,7 +819,7 @@ These optional subdependencies used for archiving sites include:
 
 <ul>
 <li><code>chromium</code> / <code>chrome</code> (for screenshots, PDF, DOM HTML, and headless JS scripts)</li>
-<li><code>node</code> &amp; <code>npm</code> (for readability, mercury, and singlefile)</li>
+<li><code>bun</code> (for readability, mercury, and singlefile)</li>
 <li><code>wget</code> (for plain HTML, static files, and WARC saving)</li>
 <li><code>curl</code> (for fetching headers, favicon, and posting to Archive.org)</li>
 <li><code>yt-dlp</code> or <code>youtube-dl</code> (for audio, video, and subtitles)</li>
@@ -1469,7 +1469,7 @@ docker run -it -v $PWD:/data archivebox:dev init
 
 # or with pip:
 pip install 'git+https://github.com/pirate/ArchiveBox@dev'
-npm install 'git+https://github.com/ArchiveBox/ArchiveBox.git#dev'
+bun add 'git+https://github.com/ArchiveBox/ArchiveBox.git#dev'
 archivebox install
 ```
 
@@ -1533,7 +1533,7 @@ archivebox manage tui
 
 # show python and JS package dependency trees
 pdm list --tree
-npm ls --all
+bun pm ls --all
 ```
 
 <img src="https://github.com/ArchiveBox/ArchiveBox/assets/511499/dc3e9f8c-9544-46e0-a7f0-30f571b72022" width="600px" alt="ArchiveBox ORM models relatinoship graph"/>
@@ -1568,8 +1568,8 @@ Extractors take the URL of a page to archive, write their output to the filesyst
 > This process is getting much easier after v0.8.x, there is a new plugin system under development: https://github.com/ArchiveBox/ArchiveBox/releases/tag/v0.8.4-rc
 
 1. [Open an issue](https://github.com/ArchiveBox/ArchiveBox/issues/new?assignees=&labels=changes%3A+behavior%2Cstatus%3A+idea+phase&template=feature_request.md&title=Feature+Request%3A+...) with your propsoed implementation (please link to the pages of any new external dependencies you plan on using)
-2. Ensure any dependencies needed are easily installable via a package managers like `apt`, `brew`, `pip3`, `npm`
-   (Ideally, prefer to use external programs available via `pip3` or `npm`, however we do support using any binary installable via package manager that exposes a CLI/Python API and writes output to stdout or the filesystem.)
+2. Ensure any dependencies needed are easily installable via a package managers like `apt`, `brew`, `pip3`, `bun`
+   (Ideally, prefer to use external programs available via `pip3` or `bun`, however we do support using any binary installable via package manager that exposes a CLI/Python API and writes output to stdout or the filesystem.)
 3. Create a new file in [`archivebox/extractors/EXTRACTOR.py`](https://github.com/ArchiveBox/ArchiveBox/blob/dev/archivebox/extractors) (copy an existing extractor like [`singlefile.py`](https://github.com/ArchiveBox/ArchiveBox/blob/dev/archivebox/extractors/singlefile.py) as a template)
 4. Add config settings to enable/disable any new dependencies and the extractor as a whole, e.g. `USE_DEPENDENCYNAME`, `SAVE_EXTRACTORNAME`, `EXTRACTORNAME_SOMEOTHEROPTION` in [`archivebox/config.py`](https://github.com/ArchiveBox/ArchiveBox/blob/dev/archivebox/config.py)
 5. Add a preview section to [`archivebox/templates/core/snapshot.html`](https://github.com/ArchiveBox/ArchiveBox/blob/dev/archivebox/templates/core/snapshot.html) to view the output, and a column to [`archivebox/templates/core/index_row.html`](https://github.com/ArchiveBox/ArchiveBox/blob/dev/archivebox/templates/core/index_row.html) with an icon for your extractor

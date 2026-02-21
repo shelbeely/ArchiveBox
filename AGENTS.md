@@ -196,7 +196,7 @@ with tempfile.TemporaryDirectory() as tmpdir:
 
     # Run hook in its output directory
     result = subprocess.run(
-        ['node', str(SCREENSHOT_HOOK), '--url=https://example.com', '--snapshot-id=snap-456'],
+        ['bun', str(SCREENSHOT_HOOK), '--url=https://example.com', '--snapshot-id=snap-456'],
         cwd=str(screenshot_dir),
         env=get_test_env(),
         capture_output=True,

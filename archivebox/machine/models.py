@@ -1978,7 +1978,7 @@ class Process(models.Model):
 
         try:
             result = subprocess.run(
-                ['node', str(chrome_utils), 'killZombieChrome', str(settings.DATA_DIR)],
+                ['bun', str(chrome_utils), 'killZombieChrome', str(settings.DATA_DIR)],
                 capture_output=True,
                 timeout=30,
                 text=True,

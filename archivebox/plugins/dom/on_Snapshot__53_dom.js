@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /**
  * Dump the DOM of a URL using Chrome/Puppeteer.
  *

@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /**
  * Extract cookies from Chrome via CDP and write to Netscape cookies.txt format.
  *

@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /**
  * Wait for Chrome session files to exist (cdp_url.txt + target_id.txt).
  *

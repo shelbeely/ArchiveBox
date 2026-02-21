@@ -42,12 +42,12 @@ def test_verify_deps_with_abx_pkg():
 
     # Verify node is available (yt-dlp needs it for JS extraction)
     node_binary = Binary(
-        name='node',
+        name='bun',
         binproviders=[AptProvider(), BrewProvider(), EnvProvider()]
     )
     node_loaded = node_binary.load()
     if not (node_loaded and node_loaded.abspath):
-        missing_binaries.append('node')
+        missing_binaries.append('bun')
 
     # Verify ffmpeg is available (yt-dlp needs it for video conversion)
     ffmpeg_binary = Binary(name='ffmpeg', binproviders=[AptProvider(), BrewProvider(), EnvProvider()])

@@ -303,7 +303,7 @@ def run_hook(
     elif ext == '.py':
         cmd = [sys.executable, str(script)]
     elif ext == '.js':
-        cmd = ['node', str(script)]
+        cmd = ['bun', str(script)]
     else:
         # Try to execute directly (assumes shebang)
         cmd = [str(script)]
@@ -377,12 +377,12 @@ def run_hook(
     else:
         env['PATH'] = current_path
 
-    # Set NODE_PATH for Node.js module resolution
+    # Set NODE_PATH for Bun module resolution
     # Priority: config dict > Machine.config > derive from LIB_DIR
     node_path = config.get('NODE_PATH')
     if not node_path and lib_dir:
-        # Derive from LIB_DIR/npm/node_modules (create if needed)
-        node_modules_dir = Path(lib_dir) / 'npm' / 'node_modules'
+        # Derive from LIB_DIR/bun/node_modules (create if needed)
+        node_modules_dir = Path(lib_dir) / 'bun' / 'node_modules'
         node_modules_dir.mkdir(parents=True, exist_ok=True)
         node_path = str(node_modules_dir)
     if not node_path:

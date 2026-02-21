@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /**
  * Record all DNS traffic (hostname -> IP resolutions) during page load.
  *

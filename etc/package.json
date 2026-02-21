@@ -1,6 +1,7 @@
 {
   "name": "archivebox",
   "version": "0.0.1",
+  "type": "commonjs",
   "repository": "github:ArchiveBox/ArchiveBox",
   "license": "MIT",
   "dependencies": {

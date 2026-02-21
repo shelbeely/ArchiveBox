@@ -34,7 +34,7 @@ def normalize_root_url(url: str) -> str:
 
 def run_headers_capture(headers_dir, snapshot_chrome_dir, env, url, snapshot_id):
     hook_proc = subprocess.Popen(
-        ['node', str(HEADERS_HOOK), f'--url={url}', f'--snapshot-id={snapshot_id}'],
+        ['bun', str(HEADERS_HOOK), f'--url={url}', f'--snapshot-id={snapshot_id}'],
         cwd=headers_dir,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -43,7 +43,7 @@ def run_headers_capture(headers_dir, snapshot_chrome_dir, env, url, snapshot_id)
     )
 
     nav_result = subprocess.run(
-        ['node', str(CHROME_NAVIGATE_HOOK), f'--url={url}', f'--snapshot-id={snapshot_id}'],
+        ['bun', str(CHROME_NAVIGATE_HOOK), f'--url={url}', f'--snapshot-id={snapshot_id}'],
         cwd=snapshot_chrome_dir,
         capture_output=True,
         text=True,
@@ -75,10 +75,10 @@ def test_hook_script_exists():
     assert HEADERS_HOOK.exists(), f"Hook script not found: {HEADERS_HOOK}"
 
 
-def test_node_is_available():
-    """Test that Node.js is available on the system."""
+def test_bun_is_available():
+    """Test that Bun is available on the system."""
     result = subprocess.run(
-        ['which', 'node'],
+        ['which', 'bun'],
         capture_output=True,
         text=True
     )
@@ -91,7 +91,7 @@ def test_node_is_available():
 
     # Test that node is executable and get version
     result = subprocess.run(
-        ['node', '--version'],
+        ['bun', '--version'],
         capture_output=True,
         text=True,
         timeout=10
@@ -105,7 +105,7 @@ def test_extracts_headers_from_example_com():
     """Test full workflow: extract headers from real example.com."""
 
     # Check node is available
-    if not shutil.which('node'):
+    if not shutil.which('bun'):
         pass
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -179,7 +179,7 @@ def test_extracts_headers_from_example_com():
 def test_headers_output_structure():
     """Test that headers plugin produces correctly structured output."""
 
-    if not shutil.which('node'):
+    if not shutil.which('bun'):
         pass
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -244,7 +244,7 @@ def test_headers_output_structure():
 def test_fails_without_chrome_session():
     """Test that headers plugin fails when chrome session is missing."""
 
-    if not shutil.which('node'):
+    if not shutil.which('bun'):
         pass
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -252,7 +252,7 @@ def test_fails_without_chrome_session():
 
         # Run headers extraction
         result = subprocess.run(
-            ['node', str(HEADERS_HOOK), f'--url={TEST_URL}', '--snapshot-id=testhttp'],
+            ['bun', str(HEADERS_HOOK), f'--url={TEST_URL}', '--snapshot-id=testhttp'],
             cwd=tmpdir,
             capture_output=True,
             text=True,
@@ -267,7 +267,7 @@ def test_fails_without_chrome_session():
 def test_config_timeout_honored():
     """Test that TIMEOUT config is respected."""
 
-    if not shutil.which('node'):
+    if not shutil.which('bun'):
         pass
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -300,7 +300,7 @@ def test_config_timeout_honored():
 def test_config_user_agent():
     """Test that USER_AGENT config is used."""
 
-    if not shutil.which('node'):
+    if not shutil.which('bun'):
         pass
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -349,7 +349,7 @@ def test_config_user_agent():
 def test_handles_https_urls():
     """Test that HTTPS URLs work correctly."""
 
-    if not shutil.which('node'):
+    if not shutil.which('bun'):
         pass
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -378,7 +378,7 @@ def test_handles_https_urls():
 def test_handles_404_gracefully():
     """Test that headers plugin handles 404s gracefully."""
 
-    if not shutil.which('node'):
+    if not shutil.which('bun'):
         pass
 
     with tempfile.TemporaryDirectory() as tmpdir:

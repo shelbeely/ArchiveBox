@@ -229,7 +229,7 @@ def extract_cookies_via_cdp(user_data_dir: Path, output_file: Path) -> bool:
 
     try:
         result = subprocess.run(
-            ['node', str(extract_script)],
+            ['bun', str(extract_script)],
             env=env,
             capture_output=True,
             text=True,

@@ -68,7 +68,7 @@ class TestSSLWithChrome(TestCase):
 
             # Run SSL hook with the active Chrome session (background hook)
             result = subprocess.Popen(
-                ['node', str(SSL_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
+                ['bun', str(SSL_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
                 cwd=str(ssl_dir),
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
@@ -77,7 +77,7 @@ class TestSSLWithChrome(TestCase):
             )
 
             nav_result = subprocess.run(
-                ['node', str(CHROME_NAVIGATE_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
+                ['bun', str(CHROME_NAVIGATE_HOOK), f'--url={test_url}', f'--snapshot-id={snapshot_id}'],
                 cwd=str(snapshot_chrome_dir),
                 capture_output=True,
                 text=True,
