@@ -50,6 +50,14 @@ jobs:
       - name: Install Python dependencies
         run: uv sync --dev --all-extras
 
+      - name: Create non-root testuser
+        # ArchiveBox refuses to run as root; tests must be executed as testuser.
+        # Use chmod (not chown) so we don't change ownership of .git/ which would
+        # break subsequent git operations run as the 'runner' user.
+        run: |
+          id testuser &>/dev/null || sudo useradd -m testuser
+          sudo chmod -R o+rX .
+
       - name: Install Node.js dependencies
         run: npm install --ignore-scripts
 
