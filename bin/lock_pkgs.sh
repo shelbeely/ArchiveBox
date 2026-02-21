@@ -22,7 +22,7 @@ py_version="$(grep -E '^version = ' pyproject.toml | awk '{print $3}' | jq -r)"
 #     exit 1
 # fi
 
-echo "[🔒] Locking all ArchiveBox dependencies (pip, npm)"
+echo "[🔒] Locking all ArchiveBox dependencies (pip, bun)"
 echo
 echo "pyproject.toml:              archivebox $py_version"
 # echo "package.json:                archivebox $js_version"

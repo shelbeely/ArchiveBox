@@ -370,10 +370,10 @@ Path to the yt-dlp binary.
 Path to the Chrome/Chromium binary.  
 More info: [Chromium Install](Chromium-Install.md)
 
-#### `NODE_BINARY`
+#### `BUN_BINARY`
 
-**Possible Values:** [`node`]/`/usr/local/bin/node`/...  
-Path to the Node.js binary.
+**Possible Values:** [`bun`]/`/usr/local/bin/bun`/...  
+Path to the Bun binary.
 
 #### `RIPGREP_BINARY`
 

@@ -81,7 +81,7 @@ Make sure you have [Homebrew](https://brew.sh/) installed first.
 
 ```bash
 # Install ArchiveBox's dependencies manually (instead of using the all-in-one brew package)
-brew install python3 node git wget curl ffmpeg yt-dlp ripgrep sonic
+brew install python3 bun git wget curl ffmpeg yt-dlp ripgrep sonic
 pip install archivebox
 archivebox install
 ```
@@ -91,11 +91,11 @@ archivebox install
 Make sure `apt` and `dpkg` are available on your system.
 
 ```bash
-# add the nodejs sources to your apt lists (optional, otherwise may use older node)
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+# Install Bun (https://bun.sh)
+curl -fsSL https://bun.sh/install | bash
 
 # Install base system dependencies manually (check ArchiveBox/Dockerfile for more if needed)
-sudo apt install python3 python3-pip python3-minimal nodejs libatomic1 zlib1g-dev libssl-dev \
+sudo apt install python3 python3-pip python3-minimal libatomic1 zlib1g-dev libssl-dev \
     libldap2-dev libsasl2-dev python3-ldap python3-msgpack python3-mutagen python3-regex \
     python3-pycryptodome procps dnsutils wget curl git yt-dlp ffmpeg ripgrep
 sudo apt install python3-setuptools  # or: python3-distutils on older systems
@@ -104,14 +104,14 @@ sudo apt install python3-setuptools  # or: python3-distutils on older systems
 #### FreeBSD
 
 ```bash
-sudo pkg install python git wget curl youtube_dl ripgrep py311-pip py311-sqlite3 npm ffmpeg
+sudo pkg install python git wget curl youtube_dl ripgrep py311-pip py311-sqlite3 bun ffmpeg
 sudo pkg install chromium
 ```
 
 #### OpenBSD
 
 ```bash
-sudo pkg_add python3 node wget git curl yt-dlp ffmpeg ripgrep chromium
+sudo pkg_add python3 bun wget git curl yt-dlp ffmpeg ripgrep chromium
 ```
 
 #### Arch Linux / Nix / Guix / etc.
@@ -134,7 +134,7 @@ mkdir -p ~/archivebox/data && cd ~/archivebox/data
 # instantiate the directory as an archivebox collection dir
 archivebox init
 
-# auto-install all the runtime JS dependencies inside ./node_modules
+# auto-install all the runtime JS dependencies
 archivebox setup
 
 # ✅ see a final detailed breakdown of all the installed dependencies and commands available
