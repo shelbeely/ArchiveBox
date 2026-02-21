@@ -1,4 +1,4 @@
-# Claude Code Development Guide for ArchiveBox
+# AI Agent Development Guide for ArchiveBox
 
 ## Quick Start
 

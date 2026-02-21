@@ -1,4 +1,4 @@
-# Claude Code Development Guide for ArchiveBox
+# GitHub Copilot Development Guide for ArchiveBox
 
 ## Quick Start
 
