@@ -557,13 +557,13 @@ def log_worker_event(
     worker_bracket_content = ", ".join(worker_parts[1:]) if len(worker_parts) > 1 else None
 
     # Build URL/plugin display (shown AFTER the label, outside brackets)
-    url_extractor_parts = []
+    url_plugin_parts = []
     if url:
-        url_extractor_parts.append(f'url: {escape(url)}')
+        url_plugin_parts.append(f'url: {escape(url)}')
     if plugin:
-        url_extractor_parts.append(f'extractor: {escape(plugin)}')
+        url_plugin_parts.append(f'plugin: {escape(plugin)}')
 
-    url_extractor_str = ' | '.join(url_extractor_parts) if url_extractor_parts else ''
+    url_plugin_str = ' | '.join(url_plugin_parts) if url_plugin_parts else ''
 
     # Build metadata string
     metadata_str = ''
@@ -624,8 +624,8 @@ def log_worker_event(
     text.append(f' {event}{error_str}', style=color)
 
     # Add URL/plugin info first (more important)
-    if url_extractor_str:
-        text.append(f' | {url_extractor_str}')
+    if url_plugin_str:
+        text.append(f' | {url_plugin_str}')
 
     # Then add other metadata
     if metadata_str:

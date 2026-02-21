@@ -33,7 +33,6 @@ class CrawlSchema(Schema):
     retry_at: datetime | None
 
     urls: str
-    extractor: str
     max_depth: int
     tags_str: str
     config: dict

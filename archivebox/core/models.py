@@ -289,6 +289,8 @@ class SnapshotManager(models.Manager.from_queryset(SnapshotQuerySet)):
 
 
 class Snapshot(ModelWithOutputDir, ModelWithConfig, ModelWithNotes, ModelWithHealthStats, ModelWithStateMachine):
+    FINAL_STEP = 9  # Hook execution uses steps 0-9; step 9 is the final step
+
     id = models.UUIDField(primary_key=True, default=uuid7, editable=False, unique=True)
     created_at = models.DateTimeField(default=timezone.now, db_index=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -364,7 +366,6 @@ class Snapshot(ModelWithOutputDir, ModelWithConfig, ModelWithNotes, ModelWithHea
 
         # Migrate filesystem if needed (happens automatically on save)
         if self.pk and self.fs_migration_needed:
-            print(f"[DEBUG save()] Triggering filesystem migration for {str(self.id)[:8]}: {self.fs_version} → {self._fs_current_version()}")
             # Walk through migration chain automatically
             current = self.fs_version
             target = self._fs_current_version()
@@ -375,7 +376,6 @@ class Snapshot(ModelWithOutputDir, ModelWithConfig, ModelWithNotes, ModelWithHea
 
                 # Only run if method exists (most are no-ops)
                 if hasattr(self, method):
-                    print(f"[DEBUG save()] Running {method}()")
                     getattr(self, method)()
 
                 current = next_ver
@@ -453,17 +453,13 @@ class Snapshot(ModelWithOutputDir, ModelWithConfig, ModelWithNotes, ModelWithHea
         old_dir = self.get_storage_path_for_version('0.8.0')
         new_dir = self.get_storage_path_for_version('0.9.0')
 
-        print(f"[DEBUG _fs_migrate] {self.timestamp}: old_exists={old_dir.exists()}, same={old_dir == new_dir}, new_exists={new_dir.exists()}")
-
         if not old_dir.exists() or old_dir == new_dir:
             # No migration needed
-            print(f"[DEBUG _fs_migrate] Returning None (early return)")
             return None
 
         if new_dir.exists():
             # New directory already exists (files already copied), but we still need cleanup
             # Return cleanup info so old directory can be cleaned up
-            print(f"[DEBUG _fs_migrate] Returning cleanup info (new_dir exists)")
             return (old_dir, new_dir)
 
         new_dir.mkdir(parents=True, exist_ok=True)
@@ -657,25 +653,18 @@ class Snapshot(ModelWithOutputDir, ModelWithConfig, ModelWithNotes, ModelWithHea
         # Look up existing (try exact match first, then fuzzy match for truncated timestamps)
         try:
             snapshot = cls.objects.get(url=url, timestamp=timestamp)
-            print(f"[DEBUG load_from_directory] Found existing snapshot for {url} @ {timestamp}: {str(snapshot.id)[:8]}")
             return snapshot
         except cls.DoesNotExist:
-            print(f"[DEBUG load_from_directory] NOT FOUND (exact): {url} @ {timestamp}")
             # Try fuzzy match - index.json may have truncated timestamp
             # e.g., index has "1767000340" but DB has "1767000340.624737"
             candidates = cls.objects.filter(url=url, timestamp__startswith=timestamp)
             if candidates.count() == 1:
-                snapshot = candidates.first()
-                print(f"[DEBUG load_from_directory] Found via fuzzy match: {snapshot.timestamp}")
-                return snapshot
-            elif candidates.count() > 1:
-                print(f"[DEBUG load_from_directory] Multiple fuzzy matches, using first")
                 return candidates.first()
-            print(f"[DEBUG load_from_directory] NOT FOUND (fuzzy): {url} @ {timestamp}")
+            elif candidates.count() > 1:
+                return candidates.first()
             return None
         except cls.MultipleObjectsReturned:
             # Should not happen with unique constraint
-            print(f"[DEBUG load_from_directory] Multiple snapshots found for {url} @ {timestamp}")
             return cls.objects.filter(url=url, timestamp=timestamp).first()
 
     @classmethod
@@ -1607,10 +1596,12 @@ class Snapshot(ModelWithOutputDir, ModelWithConfig, ModelWithNotes, ModelWithHea
         created_by_id = overrides.get('created_by_id') or (parent_snapshot.created_by.pk if parent_snapshot else get_or_create_system_user_pk())
 
         # DEBUG: Check if crawl_id in record matches overrides crawl
-        import sys
+        import logging
         record_crawl_id = record.get('crawl_id')
         if record_crawl_id and crawl and str(crawl.id) != str(record_crawl_id):
-            print(f"[yellow]⚠️  Snapshot.from_json crawl mismatch: record has crawl_id={record_crawl_id}, overrides has crawl={crawl.id}[/yellow]", file=sys.stderr)
+            logging.getLogger('archivebox').debug(
+                f'Snapshot.from_json crawl mismatch: record has crawl_id={record_crawl_id}, overrides has crawl={crawl.id}; overrides take precedence'
+            )
 
         # If no crawl provided, inherit from parent or auto-create one
         if not crawl:
@@ -1633,7 +1624,6 @@ class Snapshot(ModelWithOutputDir, ModelWithConfig, ModelWithNotes, ModelWithHea
                     label=f'auto-created for {url[:50]}',
                     created_by_id=created_by_id,
                 )
-                print(f"[red]⚠️  Snapshot.from_json auto-created new crawl {crawl.id} for url={url}[/red]", file=sys.stderr)
 
         # Parse tags
         tags_str = record.get('tags', '')
@@ -1738,6 +1728,34 @@ class Snapshot(ModelWithOutputDir, ModelWithConfig, ModelWithNotes, ModelWithHea
 
         return archiveresults
 
+
+    def advance_step_if_ready(self) -> bool:
+        """
+        Advance current_step if all foreground ARs in the current step are finished.
+
+        Background hooks (.bg.) do not block step advancement - they continue running
+        across step boundaries until the Snapshot seals or the hook exits naturally.
+
+        Returns True if step was advanced, False if still waiting on foreground hooks.
+        """
+        from archivebox.hooks import extract_step, is_background_hook
+
+        # Get all ARs for the current step that are foreground hooks
+        step_ars = [
+            ar for ar in self.archiveresult_set.all()
+            if ar.hook_name and extract_step(ar.hook_name) == self.current_step
+            and not is_background_hook(ar.hook_name)
+        ]
+
+        # Check if all foreground ARs in current step are in a final state
+        all_done = all(ar.status in ArchiveResult.FINAL_STATES for ar in step_ars)
+
+        if all_done and self.current_step < self.FINAL_STEP:
+            self.current_step += 1
+            self.save(update_fields=['current_step', 'modified_at'])
+            return True
+
+        return False
 
     def is_finished_processing(self) -> bool:
         """
