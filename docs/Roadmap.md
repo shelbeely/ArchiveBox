@@ -32,7 +32,7 @@
 - ✅ LDAP authentication support
 - ✅ Reverse proxy authentication (header-based SSO support)
 
-### `v0.9: Performance` 🛠 Mostly Complete
+### `v0.9: Performance` ✅ Complete
 
 - ✅ Break up archiving process into tasks on a queue that a worker pool executes
   - ✅ Custom `Orchestrator` + `Worker` pool system in `archivebox/workers/`
@@ -41,8 +41,8 @@
 - ✅ Plugin-based extractor hooks (`on_Snapshot__*.js`, `on_Crawl__*.py`) for lifecycle management
 - ✅ Chrome tab management via CDP (Chrome DevTools Protocol) using `chrome_utils.js`
 - ✅ Switch from Node.js/npm to [Bun](https://bun.sh) for JS plugin execution (faster startup, unified install/run/test toolchain)
-- 🛠 Keep browser sessions open across multiple snapshots (reduce open/close overhead)
-- 🛠 Multi-user support with separate personas/credentials
+- ✅ Keep browser sessions open across multiple snapshots (reduce open/close overhead)
+- ✅ Multi-user support with separate personas/credentials
 - ✅ Remove Seed model (v0.9.x — Crawl model now stores URLs directly, Seed model removed)
 
 ### `v1.0: Full headless browser control` 🛠 In Progress (current: v1.0.0)
