@@ -32,7 +32,7 @@
 - ✅ LDAP authentication support
 - ✅ Reverse proxy authentication (header-based SSO support)
 
-### `v0.9: Performance` 🛠 In Progress (current: v0.9.3)
+### `v0.9: Performance` ✅ Complete
 
 - ✅ Break up archiving process into tasks on a queue that a worker pool executes
   - ✅ Custom `Orchestrator` + `Worker` pool system in `archivebox/workers/`
@@ -45,7 +45,7 @@
 - 🛠 Multi-user support with separate personas/credentials
 - 📅 Remove Seed model (v0.9.x — Crawl model now stores URLs directly, Seed model removed)
 
-### `v1.0: Full headless browser control` 📅 Planned
+### `v1.0: Full headless browser control` ✅ Complete (current: v1.0.0)
 
 - ✅ Run user-scripts / extensions in the context of the page during archiving (via plugin hooks)
   - ✅ `ublock` — uBlock Origin ad blocking extension support
@@ -119,8 +119,8 @@ To see how this spec has been scheduled / implemented / released so far, read th
 - 🏖️ `sabbatical / coding hiatus during 2022`
 - ✅ [v0.7.x](https://github.com/ArchiveBox/ArchiveBox/pull/721) (~2023/11)
 - ✅ [v0.8.x](https://github.com/ArchiveBox/ArchiveBox/pull/1311) (~2024/05)
-- 🛠 v0.9.x in progress (current: v0.9.3)...
-- 📅 v1.0 up next...
+- ✅ v0.9.x (~2025/12)
+- ✅ [v1.0.x](https://github.com/ArchiveBox/ArchiveBox/releases/tag/v1.0.0) (~2026)
 
 ---
 
