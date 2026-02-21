@@ -80,12 +80,18 @@ def add(urls: str | list[str],
     # Read URLs directly into crawl
     urls_content = sources_file.read_text()
 
+    # Resolve persona FK
+    from archivebox.personas.models import Persona as PersonaModel
+    resolved_persona, _ = PersonaModel.objects.get_or_create(name=persona or 'Default')
+    resolved_persona.ensure_dirs()
+
     crawl = Crawl.objects.create(
         urls=urls_content,
         max_depth=depth,
         tags_str=tag,
         label=f'{USER}@{HOSTNAME} $ {cmd_str} [{timestamp}]',
         created_by_id=created_by_id,
+        persona_id=resolved_persona.id,
         config={
             'ONLY_NEW': not update,
             'INDEX_ONLY': index_only,

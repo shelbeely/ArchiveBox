@@ -194,6 +194,17 @@ class Crawl(ModelWithOutputDir, ModelWithConfig, ModelWithHealthStats, ModelWith
 
         return DATA_DIR / 'users' / self.created_by.username / 'crawls' / date_str / domain / str(self.id)
 
+    @property
+    def persona(self):
+        """Lazily fetch the Persona associated with this Crawl."""
+        if not self.persona_id:
+            return None
+        try:
+            from archivebox.personas.models import Persona
+            return Persona.objects.get(id=self.persona_id)
+        except Exception:
+            return None
+
     def get_urls_list(self) -> list[str]:
         """Get list of URLs from urls field, filtering out comments and empty lines."""
         if not self.urls:
