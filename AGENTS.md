@@ -474,6 +474,38 @@ coverage report --show-missing > coverage_report.txt
 - **Branch coverage**: Enabled by default - tracks if both branches of if/else are executed
 - **Exclude patterns**: Config in `pyproject.toml` excludes tests, migrations, type stubs
 
+## Commit Messages
+
+Write commit messages for both humans and AI agents. AI coding agents read your commit history as context when continuing work or following patterns.
+
+**Framework: what changed, why it changed, what it affects.**
+
+### Format
+
+```
+type(scope): short description of what changed
+
+Why it changed and what it affects (if not obvious from the subject line).
+```
+
+### Types
+- `feat` – new feature
+- `fix` – bug fix
+- `refactor` – code restructuring without behavior change
+- `test` – adding or updating tests
+- `docs` – documentation only
+- `chore` – maintenance (deps, CI, tooling)
+
+### Rules
+- **Be specific**: "Refactor UserService to async/await pattern" beats "fix stuff"
+- **Include the why**: "Migrate auth to JWT per security audit requirement" gives AI a rationale to apply consistently
+- **Signal scope**: "Update all API endpoints to return consistent error format" tells agents a broad change is in progress
+- **Bad**: `fix`, `updates`, `more changes`, `final fix`, `actual final fix`
+- **Good**: `refactor(auth): migrate to JWT per security audit requirement`
+- **Good**: `test(migrations): verify 0.8.x snapshot data preserved after init`
+
+Vague commit messages force AI agents to guess intent from raw diffs, burning tokens and producing incorrect continuations. Clear messages let agents extend your work without re-explanation.
+
 ## Debugging Tips
 
 ### Check Migration State
