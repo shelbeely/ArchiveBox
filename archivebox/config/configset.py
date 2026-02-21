@@ -166,6 +166,25 @@ def get_config(
 
     if user is None and crawl and hasattr(crawl, "created_by"):
         user = crawl.created_by
+
+    # Auto-fetch persona from crawl if not provided
+    if persona is None and crawl and getattr(crawl, 'persona_id', None):
+        try:
+            from archivebox.personas.models import Persona
+            persona = Persona.objects.get(id=crawl.persona_id)
+        except Exception:
+            pass
+
+    # Fallback: load persona by name from crawl.config['DEFAULT_PERSONA']
+    if persona is None and crawl and hasattr(crawl, 'config') and crawl.config:
+        persona_name = crawl.config.get('DEFAULT_PERSONA')
+        if persona_name:
+            try:
+                from archivebox.personas.models import Persona
+                persona = Persona.objects.get_or_create(name=persona_name)[0]
+            except Exception:
+                pass
+
     from archivebox.config.constants import CONSTANTS
     from archivebox.config.common import (
         SHELL_CONFIG,
