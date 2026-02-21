@@ -50,6 +50,15 @@ jobs:
       - name: Install Python dependencies
         run: uv sync --dev --all-extras
 
+      - name: Create non-root testuser
+        # ArchiveBox refuses to run as root; tests must be executed as testuser.
+        # Add testuser to the runner group and grant group r+X so testuser can
+        # read the workspace without changing ownership (runner keeps full access).
+        run: |
+          id testuser &>/dev/null || sudo useradd -m testuser
+          sudo usermod -aG runner testuser
+          sudo chmod -R g+rX .
+
       - name: Install Node.js dependencies
         run: npm install --ignore-scripts
 

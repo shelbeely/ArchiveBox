@@ -50,3 +50,6 @@ ArchiveBox.conf
 # vim
 *.sw?
 .vscode
+
+# Old/archived content
+/old/

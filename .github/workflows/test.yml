@@ -94,6 +94,15 @@ jobs:
           pwd
           ls
 
+      - name: Create non-root testuser
+        # ArchiveBox refuses to run as root; tests must run as a non-root user.
+        # Add testuser to the runner group and grant group r+X so testuser can
+        # read the workspace without changing ownership (runner keeps full access).
+        run: |
+          id testuser &>/dev/null || sudo useradd -m testuser
+          sudo usermod -aG runner testuser
+          sudo chmod -R g+rX .
+
       - name: Archivebox version
         run: |
           archivebox version
@@ -102,7 +111,7 @@ jobs:
         # TODO: remove this exception for windows once we get tests passing on that platform
         if: ${{ !contains(matrix.os, 'windows') }}
         run: |
-          python -m pytest -s --basetemp=tests/out --ignore=archivebox/pkgs
+          sudo -u testuser bash -c 'python -m pytest -s --basetemp=/tmp/pytest-out --ignore=archivebox/pkgs'
 
   docker_tests:
     runs-on: ubuntu-latest
