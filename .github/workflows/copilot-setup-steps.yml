@@ -52,12 +52,12 @@ jobs:
 
       - name: Create non-root testuser
         # ArchiveBox refuses to run as root; tests must be executed as testuser.
-        # Transfer workspace ownership to testuser so tests can write temp files,
-        # then restore .git/ ownership to runner so git operations still work.
+        # Add testuser to the runner group and grant group r+X so testuser can
+        # read the workspace without changing ownership (runner keeps full access).
         run: |
           id testuser &>/dev/null || sudo useradd -m testuser
-          sudo chown -R testuser:testuser .
-          [ -d .git ] && sudo chown -R runner:runner .git/
+          sudo usermod -aG runner testuser
+          sudo chmod -R g+rX .
 
       - name: Install Node.js dependencies
         run: npm install --ignore-scripts
