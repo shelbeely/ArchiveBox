@@ -1,0 +1,60 @@
+name: "Copilot Setup Steps"
+
+# Automatically run when changed for easy validation; also supports manual runs.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+  pull_request:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+
+jobs:
+  # The job MUST be called `copilot-setup-steps` or it will not be picked up by Copilot.
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            ripgrep build-essential python3-dev libssl-dev \
+            libldap2-dev libsasl2-dev zlib1g-dev libatomic1 \
+            gnupg2 curl wget procps sqlite3
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install Python dependencies
+        run: uv sync --dev --all-extras
+
+      - name: Install Node.js dependencies
+        run: npm install --ignore-scripts
+
+      - name: Create non-root testuser
+        # ArchiveBox refuses to run as root; tests must be executed as testuser.
+        run: |
+          sudo useradd -m testuser || true
+          sudo chown -R testuser:testuser .
