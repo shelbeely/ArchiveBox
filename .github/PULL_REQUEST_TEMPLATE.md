@@ -16,3 +16,8 @@
 - [ ] Configuration options
 - [ ] Internal architecture
 - [ ] Snapshot data layout on disk
+
+# AI assistance
+
+- [ ] Some or all of this PR was written with AI assistance (Claude, Copilot, ChatGPT, etc.)
+  - If checked: I have reviewed the AI-generated code and take responsibility for its correctness.

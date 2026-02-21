@@ -7,6 +7,26 @@
 5. Commit, push, and submit a PR and wait for review feedback
 6. Have patience, don't abandon your PR! We love contributors but we all have day jobs and don't always have time to respond to notifications instantly. If you want a faster response, ping @theSquashSH on twitter or Patreon.
 
+---
+
+## AI-Assisted Contributions
+
+AI tools (Claude, GitHub Copilot, ChatGPT, etc.) are **welcome and accepted** — the maintainer uses them regularly to develop ArchiveBox. However, the same quality bar applies regardless of whether code was written by a human or an AI.
+
+### Rules
+
+- **Disclose AI usage** in your PR description (e.g. *"Written with Claude Code"*, *"Co-authored with Copilot"*). Add the `ai-assisted` label if available.
+- **You are responsible** for everything you submit. Review AI-generated code carefully before committing — do not blindly paste output without understanding it.
+- **All existing standards apply.** AI-generated code must pass the same linting, tests, and review process as any other contribution.
+- **No AI-only PRs without human review.** PRs where the author has not read and understood the changes will be closed.
+- **Security matters.** AI tools can introduce subtle vulnerabilities. Double-check any code that handles user input, file paths, authentication, or network requests.
+
+### Tips for AI-assisted contributions
+
+- Use `CLAUDE.md` at the repo root as context when working with Claude — it documents the project conventions.
+- Run `./bin/lint.sh` and `./bin/test.sh` before submitting, even if the AI says the code is correct.
+- Prefer smaller, focused PRs over large AI-generated rewrites — they are easier to review and more likely to be merged.
+
 **Useful links:**
 
 - https://github.com/ArchiveBox/ArchiveBox/issues
