@@ -53,8 +53,3 @@ jobs:
       - name: Install Node.js dependencies
         run: npm install --ignore-scripts
 
-      - name: Create non-root testuser
-        # ArchiveBox refuses to run as root; tests must be executed as testuser.
-        run: |
-          sudo useradd -m testuser || true
-          sudo chown -R testuser:testuser .
