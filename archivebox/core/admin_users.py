@@ -41,7 +41,7 @@ class CustomUserAdmin(UserAdmin):
                 result.pk,
                 str(result.id)[:8],
                 result.snapshot.downloaded_at.strftime('%Y-%m-%d %H:%M') if result.snapshot.downloaded_at else 'pending...',
-                result.extractor,
+                result.plugin,
                 result.snapshot.url[:64],
             )
             for result in obj.archiveresult_set.order_by('-modified_at')[:10]

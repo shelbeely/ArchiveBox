@@ -78,12 +78,12 @@ def strip_html_tags(html: str) -> str:
 
 
 def find_indexable_content() -> list[tuple[str, str]]:
-    """Find text content to index from extractor outputs."""
+    """Find text content to index from plugin outputs."""
     results = []
     cwd = Path.cwd()
 
-    for extractor, file_pattern in INDEXABLE_FILES:
-        plugin_dir = cwd / extractor
+    for plugin_name, file_pattern in INDEXABLE_FILES:
+        plugin_dir = cwd / plugin_name
         if not plugin_dir.exists():
             continue
 
@@ -100,7 +100,7 @@ def find_indexable_content() -> list[tuple[str, str]]:
                     if content.strip():
                         if match.suffix in ('.html', '.htm'):
                             content = strip_html_tags(content)
-                        results.append((f'{extractor}/{match.name}', content))
+                        results.append((f'{plugin_name}/{match.name}', content))
                 except Exception:
                     continue
 
