@@ -152,6 +152,12 @@
       "default": true,
       "x-fallback": "CHECK_SSL_VALIDITY",
       "description": "Whether to verify SSL certificates (disable for self-signed certs)"
+    },
+    "CHROME_PROXY": {
+      "type": "string",
+      "default": "",
+      "x-fallback": "UPSTREAM_PROXY",
+      "description": "Upstream HTTP/HTTPS/SOCKS proxy for Chrome (e.g. http://proxy:8080 or socks5://proxy:1080)"
     }
   }
 }

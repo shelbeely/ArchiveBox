@@ -70,6 +70,12 @@
       "default": [],
       "x-aliases": ["WGET_EXTRA_ARGS"],
       "description": "Extra arguments to append to wget command"
+    },
+    "WGET_PROXY": {
+      "type": "string",
+      "default": "",
+      "x-fallback": "UPSTREAM_PROXY",
+      "description": "Upstream HTTP/HTTPS/SOCKS proxy for wget (e.g. http://proxy:8080 or socks5://proxy:1080)"
     }
   }
 }
